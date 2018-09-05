@@ -1,0 +1,27 @@
+{
+  "name": "phore/core",
+  "description": "Phore core library",
+  "license": "MIT",
+  "authors": [
+    { "name": "Matthias Leuffen", "email": "m@tth.es" }
+  ],
+  "repositories": [
+  ],
+  "require": {
+    "php": ">=7.1"
+  },
+  "suggest": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Phore\\Core\\": "src/"
+    },
+    "files": [
+      "src/functions.inc.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "nette/tester": "^2.1@dev"
+  }
+}
