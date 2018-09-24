@@ -33,3 +33,19 @@ function phore_pluck ($key, &$data, $default=null)
     $curData =& $data[$curKey];
     return phore_pluck($key,$curData, $default);
 }
+
+function startsWith($haystack, $needle) : bool
+{
+    $length = strlen($needle);
+    return (substr($haystack, 0, $length) === $needle);
+}
+
+function endsWith($haystack, $needle) : bool
+{
+    $length = strlen($needle);
+    if ($length == 0) {
+        return true;
+    }
+
+    return (substr($haystack, -$length) === $needle);
+}
