@@ -25,7 +25,7 @@ function phore_pluck ($key, &$data, $default=null)
         return $data;
 
     $curKey = array_shift($key);
-    if ( ! isset ($data[$curKey])) {
+    if (! is_array($data) || ! array_key_exists($curKey, $data)) {
         if ($default instanceof Exception)
             throw $default;
         return $default;
