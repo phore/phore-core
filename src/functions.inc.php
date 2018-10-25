@@ -18,6 +18,10 @@
  */
 function phore_pluck ($key, &$data, $default=null)
 {
+    if (is_string($key) && strpos($key, ".") !== false) {
+        $key = explode(".", $key);
+    }
+
     if ( ! is_array($key))
         $key = [$key];
 

@@ -14,6 +14,8 @@ composer requre phore/core
 ```php
 $data = ["some"=>["path"=>"data"]];
 
+assert( "data" === phore_pluck("some.path", $data) );
+
 assert( "data" === phore_pluck(["some", "path"], $data) );
 
 assert( "fail" === phore_pluck("unknown", $data, "fail") );
