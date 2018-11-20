@@ -22,3 +22,21 @@ assert( "fail" === phore_pluck("unknown", $data, "fail") );
 phore_pluck("unknown", $data, new InvalidArgumentException("path missing"));
 ```
 
+
+### Transform Array
+
+```php
+
+$input = ["a", "remove"];
+
+
+$out = phore_array_transform($input, function ($key, $value) {
+    if ($key == "remove")
+        return null;
+    return ["x"=>"y"];
+});
+
+assert([["x"=>"y"]] == $out);
+
+
+```

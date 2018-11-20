@@ -53,3 +53,24 @@ function endsWith($haystack, $needle) : bool
 
     return (substr($haystack, -$length) === $needle);
 }
+
+
+/**
+ * Transform the input array into another array using the callback function
+ * applied on each element of $input
+ *
+ * @param array $input
+ * @param callable $callback
+ * @return array
+ */
+function phore_array_transform (array $input, callable $callback) : array
+{
+    $out = [];
+    foreach ($input as $key => $value) {
+        $ret = $callback($key, $value);
+        if ($ret === null)
+            continue;
+        $out[] = $ret;
+    }
+    return $out;
+}
