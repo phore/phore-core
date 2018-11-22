@@ -55,6 +55,12 @@ function endsWith($haystack, $needle) : bool
 }
 
 
+function phore_format() : \Phore\Core\Format\PhoreFormat
+{
+    return new \Phore\Core\Format\PhoreFormat();
+}
+
+
 /**
  * Transform the input array into another array using the callback function
  * applied on each element of $input
