@@ -73,5 +73,16 @@ class PhoreFormat
         return number_format($number, $decimals, self::$config["number"]["dec_point"], self::$config["number"]["thousands_sep"]);
     }
 
+    public function filesize($size) : string
+    {
+        if ($size > 1000000) {
+            return $this->number($size / 1000000) . "MB";
+        }
+        if ($size > 1000) {
+            return $this->number($size / 1000) . "kB";
+        }
+        return $this->number($size / 1000) . "B";
+    }
+
 
 }
