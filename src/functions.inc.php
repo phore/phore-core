@@ -61,7 +61,7 @@ function endsWith($haystack, $needle) : bool
  * @return string
  */
 function phore_text_unindent(string $text) : string {
-    if ( ! preg_match('/(\R)(\s+)\S/im', $text, $matches)) {
+    if ( ! preg_match('/(\R)([ \t]+)\S/i', $text, $matches)) {
         return $text;
     }
     return trim(str_replace($matches[1] . $matches[2], $matches[1], $text));
