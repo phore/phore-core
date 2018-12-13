@@ -54,6 +54,20 @@ function endsWith($haystack, $needle) : bool
     return (substr($haystack, -$length) === $needle);
 }
 
+/**
+ * Unindent (strip trailing whitespace) string
+ *
+ * @param string $text
+ * @return string
+ */
+function phore_unindent(string $text) : string {
+    if ( ! preg_match('/(\R)(\s+)\S/im', $text, $matches)) {
+        return $text;
+    }
+    return trim(str_replace($matches[1] . $matches[2], $matches[1], $text));
+}
+
+
 
 function phore_format() : \Phore\Core\Format\PhoreFormat
 {
