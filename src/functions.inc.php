@@ -60,7 +60,7 @@ function endsWith($haystack, $needle) : bool
  * @param string $text
  * @return string
  */
-function phore_unindent(string $text) : string {
+function phore_text_unindent(string $text) : string {
     if ( ! preg_match('/(\R)(\s+)\S/im', $text, $matches)) {
         return $text;
     }

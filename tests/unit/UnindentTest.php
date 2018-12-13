@@ -29,7 +29,7 @@ Some indented
 Text
     With subtext
 EOT;
-        $this->assertEquals($expected, phore_unindent($input));
+        $this->assertEquals($expected, phore_text_unindent($input));
 
     }
 
