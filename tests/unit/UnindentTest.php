@@ -33,5 +33,23 @@ EOT;
 
     }
 
+    public function testUnindentWithNoIndentaionNewline()
+    {
+        $input = <<<EOT
+
+Some indented
+Text
+    With subtext
+
+EOT;
+
+        $expected = <<<EOT
+Some indented
+Text
+    With subtext
+EOT;
+        $this->assertEquals($expected, phore_text_unindent($input));
+
+    }
 
 }

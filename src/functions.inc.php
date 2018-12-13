@@ -61,10 +61,10 @@ function endsWith($haystack, $needle) : bool
  * @return string
  */
 function phore_text_unindent(string $text) : string {
-    if ( ! preg_match('/(\R)([ \t]+)\S/i', $text, $matches)) {
+    if ( ! preg_match('/\n([ \t]*)\S+/', $text, $matches)) {
         return $text;
     }
-    return trim(str_replace($matches[1] . $matches[2], $matches[1], $text));
+    return trim(str_replace("\n" . $matches[1], "\n", $text));
 }
 
 
