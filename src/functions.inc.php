@@ -94,3 +94,23 @@ function phore_array_transform (array $input, callable $callback) : array
     }
     return $out;
 }
+
+
+/**
+ * Output a message to the defined channel including timing information
+ *
+ * @param $msg
+ * @param bool $return
+ */
+function phore_out($msg=null, $return = false) {
+    static $lastTime = null;
+    if ($lastTime === null) {
+        $lastTime = microtime(true);
+    }
+    $str = "\n[+" . number_format((microtime(true) - $lastTime), 3, ".", "") . "s] $msg";
+    $lastTime = microtime(true);
+    if ($return === true)
+        return $str;
+    echo $str;
+}
+
