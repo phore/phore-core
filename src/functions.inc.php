@@ -104,10 +104,11 @@ function phore_array_transform (array $input, callable $callback) : array
  */
 function phore_out($msg=null, $return = false) {
     static $lastTime = null;
+    static $firstTime = null;
     if ($lastTime === null) {
-        $lastTime = microtime(true);
+        $lastTime = $firstTime = microtime(true);
     }
-    $str = "\n[+" . number_format((microtime(true) - $lastTime), 3, ".", "") . "s] $msg";
+    $str = "\n[" . number_format((microtime(true) - $firstTime), 3, ".", "") . "+" . number_format((microtime(true) - $lastTime), 3, ".", "") . "s] $msg";
     $lastTime = microtime(true);
     if ($return === true)
         return $str;
