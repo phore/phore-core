@@ -94,3 +94,39 @@ function phore_array_transform (array $input, callable $callback) : array
     }
     return $out;
 }
+
+
+/**
+ * Escape parameters joined into a string using a escaper function
+ *
+ * @param string $cmd
+ * @param array $params
+ * @param callable $escaperFn
+ * @return string
+ */
+function phore_escape (string $cmd, array $args, callable $escaperFn) : string
+{
+    $argsCounter = 0;
+    $cmd = preg_replace_callback( '/\?|\:[a-z0-9_\-]+|\{[a-z0-9_\-]+\}/i',
+        function ($match) use (&$argsCounter, &$args, $escaperFn) {
+            if ($match[0] === '?') {
+                if(! isset($args[$argsCounter])){
+                    throw new \Exception("Index $argsCounter missing");
+                }
+                $argsCounter++;
+                return escapeshellarg(array_shift($args));
+            }
+            if ($match[0][0] === "{") {
+                $key = substr($match[0], 1, -1);
+            } else {
+                $key = substr($match[0], 1);
+            }
+            if (!isset($args[$key])){
+                throw new \Exception("Key '$key' not found");
+            }
+            return $escaperFn($args[$key], $key);
+        },
+        $cmd);
+    return $cmd;
+}
+
