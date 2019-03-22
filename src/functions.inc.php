@@ -130,3 +130,86 @@ function phore_escape (string $cmd, array $args, callable $escaperFn) : string
     return $cmd;
 }
 
+/*
+ * Output a message to the defined channel including timing information
+ *
+ * @param $msg
+ * @param bool $return
+ */
+function phore_out($msg=null, $return = false) {
+    static $lastTime = null;
+    static $firstTime = null;
+    if ($lastTime === null) {
+        $lastTime = $firstTime = microtime(true);
+    }
+    $str = "\n[" . number_format((microtime(true) - $firstTime), 3, ".", "") . "+" . number_format((microtime(true) - $lastTime), 3, ".", "") . "s] $msg";
+    $lastTime = microtime(true);
+    if ($return === true)
+        return $str;
+    echo $str;
+}
+
+
+/**
+ * Print json nicely
+ * 
+ * @param $json
+ * @return string
+ */
+function phore_json_pretty_print(string $json) : string
+{
+    $result = '';
+    $level = 0;
+    $in_quotes = false;
+    $in_escape = false;
+    $ends_line_level = NULL;
+    $json_length = strlen( $json );
+
+    for( $i = 0; $i < $json_length; $i++ ) {
+        $char = $json[$i];
+        $new_line_level = NULL;
+        $post = "";
+        if( $ends_line_level !== NULL ) {
+            $new_line_level = $ends_line_level;
+            $ends_line_level = NULL;
+        }
+        if ( $in_escape ) {
+            $in_escape = false;
+        } else if( $char === '"' ) {
+            $in_quotes = !$in_quotes;
+        } else if( ! $in_quotes ) {
+            switch( $char ) {
+                case '}': case ']':
+                $level--;
+                $ends_line_level = NULL;
+                $new_line_level = $level;
+                break;
+
+                case '{': case '[':
+                $level++;
+                case ',':
+                    $ends_line_level = $level;
+                    break;
+
+                case ':':
+                    $post = " ";
+                    break;
+
+                case " ": case "\t": case "\n": case "\r":
+                $char = "";
+                $ends_line_level = $new_line_level;
+                $new_line_level = NULL;
+                break;
+            }
+        } else if ( $char === '\\' ) {
+            $in_escape = true;
+        }
+        if( $new_line_level !== NULL ) {
+            $result .= "\n".str_repeat( "\t", $new_line_level );
+        }
+        $result .= $char.$post;
+    }
+
+    return $result;
+}
+
