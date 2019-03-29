@@ -25,7 +25,7 @@ class PhoreJsonTest extends TestCase
     public function testDecodeWillThrowExceptionOnSimpleDataType()
     {
         $in = 123;
-        $this->expectException(PhoreException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $out = phore_json_decode(phore_json_encode($in));
 
     }

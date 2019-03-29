@@ -223,7 +223,7 @@ function phore_json_encode($input) : string
 /**
  * @param string $input
  * @return array
- * @throws \Phore\Core\Exception\PhoreException
+ * @throws InvalidArgumentException
  */
 function phore_json_decode(string $input) : array
 {
@@ -231,7 +231,7 @@ function phore_json_decode(string $input) : array
     if ($ret === null)
         throw new InvalidArgumentException("Cannot json_decode() input data: " . json_last_error_msg());
     if ( ! is_array($ret))
-        throw new \Phore\Core\Exception\PhoreException("phore_json_decode(): Simple data import (string, int, bool) not supported.");
+        throw new InvalidArgumentException("phore_json_decode(): Simple data import (string, int, bool) not supported.");
     return $ret;
 }
 
