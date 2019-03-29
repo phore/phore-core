@@ -213,3 +213,25 @@ function phore_json_pretty_print(string $json) : string
     return $result;
 }
 
+
+
+function phore_json_encode($input) : string
+{
+    return json_encode($input, JSON_PRESERVE_ZERO_FRACTION);
+}
+
+/**
+ * @param string $input
+ * @return array
+ * @throws \Phore\Core\Exception\PhoreException
+ */
+function phore_json_decode(string $input) : array
+{
+    $ret = json_decode($input, true, 512, JSON_PRESERVE_ZERO_FRACTION);
+    if ($ret === null)
+        throw new \Phore\Core\Exception\PhoreException("Cannot phore_json_decode(): " . json_last_error_msg());
+    if ( ! is_array($ret))
+        throw new \Phore\Core\Exception\PhoreException("phore_json_decode(): Simple data import (string, int, bool) not supported.");
+    return $ret;
+}
+
