@@ -8,6 +8,7 @@
   "repositories": [
   ],
   "require": {
+    "ext-http": "*",
     "php": ">=7.1"
   },
   "suggest": {
