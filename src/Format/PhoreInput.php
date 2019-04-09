@@ -9,8 +9,6 @@
 namespace Phore\Core\Format;
 
 
-use http\Exception\InvalidArgumentException;
-
 class PhoreInput
 {
     private $format = ["Y-m-d\TH:i:sP","Y-m-d\TH:i:s","Y-m-d\TH:i:s.uP","Y-m-d\TH:i:s.u","Y-m-d"];
@@ -28,11 +26,11 @@ class PhoreInput
 
     public function toTimestampUtc($input) : float
     {
-        if(is_numeric($input) && strtotime(date('Y-m-d H:i:s',$input)) === (int)$input) {
+        if(is_numeric($input) && strtotime(date('Y-m-d H:i:s',$input)) === (int)$input) { //vllt nur is_numeric
             return $input;
         } else {
             if(!$this->validateDate($input, $this->format)){
-                throw new InvalidArgumentException("Wrong Data Format");
+                throw new \InvalidArgumentException("Wrong Date Format: $input");
             }
             $date = new \DateTime($input);
             return $date->format('U.u');

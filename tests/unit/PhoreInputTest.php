@@ -31,10 +31,8 @@ class PhoreInputTest extends TestCase
         //Format = Y-m-d
         $this->assertEquals(1554681600.0, $phoreInput->toTimestampUtc("2019-04-08"));
         //Exception
-        try{
-            $phoreInput->toTimestampUtc("05-2019-03");
-        } catch (\InvalidArgumentException $e){
-            $this->assertEquals($e->getMessage(), "Wrong Data Format");
-        }
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Wrong Date Format: 05-2019-03");
+        $phoreInput->toTimestampUtc("05-2019-03");
     }
 }
