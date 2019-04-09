@@ -32,7 +32,7 @@ class PhoreInput
             if(!$this->validateDate($input, $this->format)){
                 throw new \InvalidArgumentException("Wrong Date Format: $input");
             }
-            $date = new \DateTime($input);
+            $date = new \DateTime($input, new \DateTimeZone('UTC'));
             return $date->format('U.u');
         }
     }
