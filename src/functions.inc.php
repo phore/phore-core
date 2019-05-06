@@ -235,3 +235,43 @@ function phore_json_decode(string $input) : array
     return $ret;
 }
 
+
+/**
+ * Return cryptographic safe string of alphanumeric chars
+ *
+ * Will use libsodium in parallel to php buildIn random_int() function
+ *
+ * @param int $len
+ * @return string
+ */
+function phore_random_str (int $len = 12, $requireSodium=false) : string
+{
+    $keysAvail = "abcdefghijklmopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    $keylen = strlen($keysAvail)-1;
+
+    $fns = [
+        function() use ($keylen, $keysAvail) {
+            return $keysAvail[random_int(0, $keylen)];
+        }
+    ];
+
+    // If libsodium is installed: use it too.
+    if (function_exists("\\Sodium\\randombytes_uniform")) {
+        $fns[] = function () use ($keylen, $keysAvail) {
+            return $keysAvail[Sodium\randombytes_uniform($keylen)];
+        };
+    } else {
+        if ($requireSodium === true)
+            throw new InvalidArgumentException("Libsodium is required for phore_random_str()");
+    }
+
+    $key = "";
+    for ($i = 0; $i<$len; $i++) {
+        $key .= $fns[$data = mt_rand(0, count ($fns) - 1)]();
+    }
+    if (strlen($key) !== $len)
+        throw new InvalidArgumentException("phore_random_str(): produced invalid output len.");
+
+    return $key;
+}
+
