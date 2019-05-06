@@ -45,3 +45,8 @@ assert([["x"=>"y"]] == $out);
 ### Text functions
 
 - `phore_text_unindent(string $input)`
+
+
+### phore_random_str()
+
+Wrapper around libsodium and 

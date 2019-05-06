@@ -142,6 +142,11 @@ function phore_out($msg=null, $return = false) {
     if ($lastTime === null) {
         $lastTime = $firstTime = microtime(true);
     }
+
+    if (is_array($msg)) {
+        $msg = implode(" ", $msg);
+    }
+
     $str = "\n[" . number_format((microtime(true) - $firstTime), 3, ".", "") . "+" . number_format((microtime(true) - $lastTime), 3, ".", "") . "s] $msg";
     $lastTime = microtime(true);
     if ($return === true)
