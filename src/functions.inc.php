@@ -156,6 +156,28 @@ function phore_out($msg=null, $return = false) {
 
 
 /**
+ * Check that input is a valid string and that it
+ * has no special chars inside. Throws exception if
+ * not.
+ *
+ * @param $input
+ * @throws \Phore\Core\Exception\InvalidDataException
+ * @throws InvalidArgumentException
+ * @param array $allowedChars
+ */
+function phore_assert_str_alnum($input, array $allowedChars=[]) : bool
+{
+    if ( ! is_string($input))
+        throw new InvalidArgumentException("Parameter 1 is not type string.");
+    $input = str_replace($allowedChars, '', $input); // Allow chars in parameter 2
+    if ( ! ctype_alnum($input))
+        throw new \Phore\Core\Exception\InvalidDataException("Parameter 1 is not alphanumeric. [a-zA-Z0-9" . implode("", $allowedChars). "]");
+    return true;
+}
+
+
+
+/**
  * Print json nicely
  * 
  * @param $json
