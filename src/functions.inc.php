@@ -75,6 +75,12 @@ function phore_format() : \Phore\Core\Format\PhoreFormat
 }
 
 
+function phore_assert($value) : \Phore\Core\Helper\_PhoreAssert
+{
+    return new \Phore\Core\Helper\_PhoreAssert($value);
+}
+
+
 /**
  * Transform the input array into another array using the callback function
  * applied on each element of $input
