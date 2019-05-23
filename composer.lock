@@ -686,12 +686,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a2075e51644566ce59517a9dcd679bc1ce049ce3"
+                "reference": "41a52603095306e5e122d319985862367c985670"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a2075e51644566ce59517a9dcd679bc1ce049ce3",
-                "reference": "a2075e51644566ce59517a9dcd679bc1ce049ce3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/41a52603095306e5e122d319985862367c985670",
+                "reference": "41a52603095306e5e122d319985862367c985670",
                 "shasum": ""
             },
             "require": {
@@ -718,6 +718,7 @@
                 "sebastian/global-state": "^3.0",
                 "sebastian/object-enumerator": "^3.0.3",
                 "sebastian/resource-operations": "^2.0",
+                "sebastian/type": "^1.0",
                 "sebastian/version": "^2.0.1"
             },
             "require-dev": {
@@ -760,7 +761,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-05-08T06:54:49+00:00"
+            "time": "2019-05-21T05:45:56+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -1287,6 +1288,52 @@
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
             "time": "2018-10-04T04:07:39+00:00"
+        },
+        {
+            "name": "sebastian/type",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/type.git",
+                "reference": "448c58c4f2447236328c4de53b4eaddcec9bd070"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/448c58c4f2447236328c4de53b4eaddcec9bd070",
+                "reference": "448c58c4f2447236328c4de53b4eaddcec9bd070",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Sebastian Bergmann",
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
+                }
+            ],
+            "description": "Collection of value objects that represent the types of the PHP type system",
+            "homepage": "https://github.com/sebastianbergmann/type",
+            "time": "2019-05-19T13:15:16+00:00"
         },
         {
             "name": "sebastian/version",

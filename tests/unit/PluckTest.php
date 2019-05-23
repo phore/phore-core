@@ -37,4 +37,26 @@ class PluckTest extends TestCase
         $this->expectException(\Exception::class);
         phore_pluck("a.b.c", $this->in, new \Exception("Ex"));
     }
+
+    public function testPluckArrayData()
+    {
+        $input = [
+            "a" => [
+                ["b"=>"val1"],
+                ["b"=>"val2"]
+            ]
+        ];
+        $this->assertEquals(["val1", "val2"], phore_pluck("a[].b", $input));
+    }
+
+     public function testPluckArrayDataWithEmptyArray()
+     {
+        $input = [
+            "a" => [
+            ]
+        ];
+        // Must return empty array because the path is still valid
+        $this->assertEquals([], phore_pluck("a[].b", $input));
+     }
+
 }

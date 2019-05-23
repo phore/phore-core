@@ -28,13 +28,35 @@ function phore_pluck ($key, &$data, $default=null)
     if (count($key) === 0)
         return $data;
 
+    $asArray = false;
     $curKey = array_shift($key);
-    if (! is_array($data) || ! array_key_exists($curKey, $data)) {
+    if (endsWith($curKey, "[]")) {
+        $curKey = substr($curKey, 0, -2);
+        $asArray = true;
+    }
+
+    if (!is_array($data) || !array_key_exists($curKey, $data)) {
         if ($default instanceof Exception)
             throw $default;
         return $default;
     }
+
     $curData =& $data[$curKey];
+
+    if ($asArray) {
+        if ( ! is_array($curData)) {
+            if ($default instanceof Exception)
+                throw $default;
+            return $default;
+        }
+        $ret = [];
+        foreach ($curData as $index => &$curArrData) {
+            $ret[] = phore_pluck($key, $curArrData, $default);
+        }
+        return $ret;
+    }
+
+
     return phore_pluck($key,$curData, $default);
 }
 
