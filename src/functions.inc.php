@@ -97,6 +97,12 @@ function phore_format() : \Phore\Core\Format\PhoreFormat
 }
 
 
+function phore_assert($value) : \Phore\Core\Helper\_PhoreAssert
+{
+    return new \Phore\Core\Helper\_PhoreAssert($value);
+}
+
+
 /**
  * Transform the input array into another array using the callback function
  * applied on each element of $input
@@ -186,14 +192,18 @@ function phore_out($msg=null, $return = false) {
  * @throws \Phore\Core\Exception\InvalidDataException
  * @throws InvalidArgumentException
  * @param array $allowedChars
+ * @param Exception Exception to throw
  */
-function phore_assert_str_alnum($input, array $allowedChars=[]) : bool
+function phore_assert_str_alnum($input, array $allowedChars=[], Exception $throwException=null) : bool
 {
     if ( ! is_string($input))
         throw new InvalidArgumentException("Parameter 1 is not type string.");
     $input = str_replace($allowedChars, '', $input); // Allow chars in parameter 2
-    if ( ! ctype_alnum($input))
-        throw new \Phore\Core\Exception\InvalidDataException("Parameter 1 is not alphanumeric. [a-zA-Z0-9" . implode("", $allowedChars). "]");
+    if ( ! ctype_alnum($input)) {
+        if ($throwException === null)
+            throw new \Phore\Core\Exception\InvalidDataException("Parameter 1 is not alphanumeric. [a-zA-Z0-9" . implode("", $allowedChars) . "]");
+        throw $throwException;
+    }
     return true;
 }
 
