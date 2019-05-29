@@ -23,7 +23,7 @@ class PhoreEncrypt
             SODIUM_CRYPTO_SECRETBOX_NONCEBYTES
         );
 
-        $plainData = phore_json_encode([$validTillTs, $plainData]);
+        $plainData = phore_json_encode([$validTillTs, $plainData, phore_hash($this->encryptionSecret . $validTillTs . $plainData . $nonce)]);
 
         if ($this->gzip) {
             $plainData = gzencode($plainData, 7);
@@ -80,6 +80,9 @@ class PhoreEncrypt
         }
         $message = phore_json_decode($message);
 
+        if (phore_hash($this->encryptionSecret . $message[0] . $message[1] . $nonce) !== $message[2])
+            throw new \InvalidArgumentException("Hash mismatch.");
+        
         if ($message[0] < time())
             return null;
 
