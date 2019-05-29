@@ -103,6 +103,19 @@ function phore_assert($value) : \Phore\Core\Helper\_PhoreAssert
 }
 
 
+function phore_hash($input, $secure=false) : string
+{
+    if ( ! is_string($input))
+        throw new InvalidArgumentException("Parameter 1 must be string");
+    if (strlen($input) == 0)
+        throw new InvalidArgumentException("Parameter 1 strlen is 0 (empty string)");
+    if ($secure === false) {
+        return base64_encode(sha1($input, true));
+    }
+    return base64_encode(sha1(sha1($input, true) . "P", true) . md5(sha1($input, true) . "X", true) );
+}
+
+
 /**
  * Transform the input array into another array using the callback function
  * applied on each element of $input
