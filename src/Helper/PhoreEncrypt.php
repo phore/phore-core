@@ -83,7 +83,7 @@ class PhoreEncrypt
         if (phore_hash($this->encryptionSecret . $message[0] . $message[1] . $nonce) !== $message[2])
             throw new \InvalidArgumentException("Hash mismatch.");
         
-        if ($message[0] < time())
+        if ($message[0] !== null && $message[0] < time())
             return null;
 
         return $message[1];
