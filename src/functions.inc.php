@@ -381,3 +381,40 @@ function phore_random_str (int $len = 12, $requireSodium=false) : string
     return $key;
 }
 
+/**
+ *
+ * Returns:
+ *      string      with value of the annotion
+ *      array       with elements separated by space count $arrayParts
+ *      null        if the annotation was not found
+ *
+ * @param string $text
+ * @param string $annotationName
+ * @param int|null $arrayParts
+ * @return array|null|string
+ */
+function phore_parse_annotation(string $text, string $annotationName, int $arrayParts = null)
+{
+    if (substr($annotationName, 0,1) !== "@")
+        throw new InvalidArgumentException("Parameter 2 must start with '@' character");
+
+    $startPos = strpos($text, $annotationName);
+    if ($startPos === false)
+        return null;
+
+    $val = substr($text, $startPos + strlen($annotationName));
+
+    $val = substr($val, 0, strpos($val, "\n"));
+    $val = trim ($val);
+
+    if ($arrayParts === null)
+        return $val;
+
+    $params = explode(" ", $val, $arrayParts);
+    for ($i=count($params); $i<$arrayParts; $i++)
+        $params[] = null;
+    return $params;
+}
+
+
+
