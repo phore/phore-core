@@ -307,6 +307,40 @@ function phore_json_decode(string $input) : array
     return $ret;
 }
 
+/**
+ * @param $input
+ * @return string
+ */
+function phore_yaml_encode($input) : string
+{
+    if ( ! function_exists("yaml_parse"))
+        throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
+    return yaml_emit($input);
+}
+
+/**
+ *
+ *
+ * @param string $input
+ * @throws InvalidArgumentException
+ * @return array
+ */
+function phore_yaml_decode(string $input) : array
+{
+    if ( ! function_exists("yaml_parse"))
+        throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
+    ini_set("yaml.decode_php", "0");
+    $ret = yaml_parse($input);
+    if ($ret === false) {
+        $err = error_get_last();
+        throw new InvalidArgumentException(
+            "Invalid yaml input: {$err["message"]}",
+            0
+        );
+    }
+    return $ret;
+}
+
 
 /**
  * Return cryptographic safe string of alphanumeric chars

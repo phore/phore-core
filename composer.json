@@ -12,6 +12,9 @@
     "php": ">=7.1"
   },
   "suggest": {
+    "ext-yaml": "Yaml encoding parsing",
+    "ext-sodium": "Encryption functions",
+    "ext-json": "Json encoding parsing"
   },
   "autoload": {
     "psr-4": {
@@ -23,6 +26,9 @@
   },
   "minimum-stability": "dev",
   "require-dev": {
-    "phpunit/phpunit": "*"
+    "phpunit/phpunit": "*",
+    "ext-yaml": "*",
+    "ext-sodium": "*",
+    "ext-json": "*"
   }
 }
