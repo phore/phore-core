@@ -40,7 +40,7 @@ class PhoreSecretBoxSync
         if ($this->ttl !== null)
             $validTillTs = time() + $this->ttl;
 
-        $plainData = phore_json_encode([$validTillTs, $plainData, phore_hash($this->encryptionSecret . $validTillTs . $plainData . $nonce)]);
+        $plainData = phore_json_encode([$validTillTs, $plainData, phore_hash($this->encryptionSecret . $validTillTs . $plainData . $nonce, false)]);
 
         if ($this->gzip) {
             $plainData = gzencode($plainData, 7);
@@ -58,11 +58,17 @@ class PhoreSecretBoxSync
             )
         );
         sodium_memzero($plainData);
+        $cipher = "E1-" . $cipher;
         return $cipher;
     }
 
     public function decrypt(string $encrypted) : ?string
     {
+
+        if ( ! substr($encrypted, 0, 3) === "E1-")
+            throw new \InvalidArgumentException("Message has invalid E1 encrypted data prefix.");
+        $encrypted = substr($encrypted, 3);
+
         $decoded = base64_decode($encrypted);
 
         // check for general failures

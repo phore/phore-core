@@ -103,16 +103,25 @@ function phore_assert($value) : \Phore\Core\Helper\_PhoreAssert
 }
 
 
-function phore_hash($input, $secure=false) : string
+function phore_hash($input, bool $secure=false, bool $raw=false) : string
 {
     if ( ! is_string($input))
         throw new InvalidArgumentException("Parameter 1 must be string");
     if (strlen($input) == 0)
         throw new InvalidArgumentException("Parameter 1 strlen is 0 (empty string)");
     if ($secure === false) {
-        return base64_encode(sha1($input, true));
+        $hash = sha1($input, true);
+        if ($raw) {
+            return $hash;
+        }
+        return base64_encode($hash);
     }
-    return base64_encode(sha1(sha1($input, true) . "P", true) . md5(sha1($input, true) . "X", true) );
+    $hash = sha1(sha1($input, true) . "P", true) . md5(sha1($input, true) . "X", true);
+    if ($raw) {
+        return $hash;
+    }
+
+    return base64_encode($hash);
 }
 
 
