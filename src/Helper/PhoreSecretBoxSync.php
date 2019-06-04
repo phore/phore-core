@@ -90,6 +90,7 @@ class PhoreSecretBoxSync
 
         // decrypt it and account for extra padding from $block_size (enforce 512 byte limit)
         $decrypted_padded_message = sodium_crypto_secretbox_open($ciphertext, $nonce, $this->encryptionSecret);
+
         $message = sodium_unpad($decrypted_padded_message, self::DEFAULT_PAD_SIZE);
 
         // check for encrpytion failures

@@ -39,6 +39,19 @@ class PhoreSecretBoxSyncTest extends TestCase
         $this->assertEquals($input, $encryptor->decrypt($encryptor->encrypt($input)));
     }
 
+    public function testWriteToDisk()
+    {
+        $secret = phore_random_str(40);
+
+        $encryptor = new PhoreSecretBoxSync($secret);
+
+        $input = phore_random_str(2024);
+
+        file_put_contents("/tmp/enc", $encryptor->encrypt($input));
+
+        $this->assertEquals($input, $encryptor->decrypt(file_get_contents("/tmp/enc")));
+    }
+
 
     public function testCanDecrypt ()
     {
