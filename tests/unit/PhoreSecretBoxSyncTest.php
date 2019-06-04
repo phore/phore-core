@@ -16,13 +16,25 @@ class PhoreSecretBoxSyncTest extends TestCase
 {
 
 
-    public function testEncryptDecrypt()
+    public function testEncryptDecryptShortString()
+    {
+        $secret = phore_random_str(45);
+
+        $encryptor = new PhoreSecretBoxSync($secret);
+
+        $input = phore_random_str(46);
+
+        $this->assertEquals($input, $encryptor->decrypt($encryptor->encrypt($input)));
+    }
+
+
+    public function testEncryptDecryptLongString()
     {
         $secret = phore_random_str(512);
 
         $encryptor = new PhoreSecretBoxSync($secret);
 
-        $input = "ABC";
+        $input = phore_random_str(600);
 
         $this->assertEquals($input, $encryptor->decrypt($encryptor->encrypt($input)));
     }
@@ -37,5 +49,7 @@ class PhoreSecretBoxSyncTest extends TestCase
 
         $this->assertEquals("SECRET", $encryptor->decrypt($mockIn));
     }
+
+
 
 }
