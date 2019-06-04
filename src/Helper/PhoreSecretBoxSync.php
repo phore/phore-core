@@ -10,7 +10,6 @@ class PhoreSecretBoxSync
     private $ttl;
     private $gzip;
 
-    const DEFAULT_PAD_SIZE = 512;
 
     public function __construct(string $enryptionSecret, int $ttl=null, bool $gzip=true)
     {
@@ -45,9 +44,6 @@ class PhoreSecretBoxSync
         if ($this->gzip) {
             $plainData = gzencode($plainData, 7);
         }
-
-        $plainData = sodium_pad($plainData, self::DEFAULT_PAD_SIZE);
-
 
         $cipher = base64_encode(
             $nonce.
@@ -89,9 +85,7 @@ class PhoreSecretBoxSync
         $ciphertext = mb_substr($decoded, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit');
 
         // decrypt it and account for extra padding from $block_size (enforce 512 byte limit)
-        $decrypted_padded_message = sodium_crypto_secretbox_open($ciphertext, $nonce, $this->encryptionSecret);
-
-        $message = sodium_unpad($decrypted_padded_message, self::DEFAULT_PAD_SIZE);
+        $message = sodium_crypto_secretbox_open($ciphertext, $nonce, $this->encryptionSecret);
 
         // check for encrpytion failures
         if ($message === false) {
