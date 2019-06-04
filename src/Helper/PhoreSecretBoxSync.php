@@ -10,7 +10,7 @@ class PhoreSecretBoxSync
     private $ttl;
     private $gzip;
 
-    const DEFAULT_PAD_SIZE = 1024;
+    const DEFAULT_PAD_SIZE = 512;
 
     public function __construct(string $enryptionSecret, int $ttl=null, bool $gzip=true)
     {
