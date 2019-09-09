@@ -26,7 +26,7 @@ class PhoreInput
 
     public function toTimestampUtc($input) : float
     {
-        if(is_numeric($input) && strtotime(date('Y-m-d H:i:s',$input)) === (int)$input) {
+        if(is_numeric($input)) {
             return $input;
         } else {
             if(!$this->validateDate($input, $this->format)){
