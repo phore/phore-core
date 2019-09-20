@@ -41,7 +41,7 @@ class PhoreSerializeTest extends TestCase
 
         // Default mode: Don't allow objects at all (SECURITY BY DEFAULT)
         // Read: https://www.php.net/manual/de/function.unserialize.php
-        $unserialized = phore_unserialize($serialized_data, true);
+        $unserialized = phore_unserialize($serialized_data);
 
         self::assertEquals(\__PHP_Incomplete_Class::class, get_class($unserialized));
     }

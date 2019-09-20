@@ -65,14 +65,14 @@ class PhoreSecretBoxSync
     {
 
         if ( ! substr($encrypted, 0, 3) === "E1-")
-            throw new \InvalidArgumentException("Message has invalid E1 encrypted data prefix.");
+            throw new \InvalidArgumentException("Decryption failed. Message has invalid E1 encrypted data prefix.");
         $encrypted = substr($encrypted, 3);
 
         $decoded = base64_decode($encrypted);
 
         // check for general failures
         if ($decoded === false) {
-            throw new \InvalidArgumentException('The encoding failed');
+            throw new \InvalidArgumentException('Decryption failed. Incorrect base64 enconding.');
         }
 
 
@@ -80,7 +80,7 @@ class PhoreSecretBoxSync
         // check for incomplete message. CRYPTO_SECRETBOX_MACBYTES doesn't seem to exist in this version...
         if (!defined('CRYPTO_SECRETBOX_MACBYTES')) define('CRYPTO_SECRETBOX_MACBYTES', 16);
         if (mb_strlen($decoded, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('The message was truncated');
+            throw new \Exception('Decryption failed: mac/nonce ');
         }
 
         // pull nonce and ciphertext out of unpacked message
@@ -92,7 +92,7 @@ class PhoreSecretBoxSync
 
         // check for encrpytion failures
         if ($message === false) {
-             throw new \InvalidArgumentException('The message was tampered with in transit');
+             throw new \InvalidArgumentException('Decryption failed. Incorrect secret.');
         }
 
         if ($this->gzip) {
