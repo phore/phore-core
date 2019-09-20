@@ -22,18 +22,6 @@ class TestObj {
 
 class PhoreSerializeTest extends TestCase
 {
-
-    public function testObjectDeSerializerWithAnyClass()
-    {
-        $obj = new TestObj();
-        $serialized_data = phore_serialize($obj);
-
-        // Dangerous mode: Allow all classes
-        $unserialized = phore_unserialize($serialized_data, true);
-
-        self::assertEquals(TestObj::class, get_class($unserialized));
-    }
-
     public function testObjectDeserialisationDefaultOff()
     {
         $obj = new TestObj();
@@ -46,6 +34,16 @@ class PhoreSerializeTest extends TestCase
         self::assertEquals(\__PHP_Incomplete_Class::class, get_class($unserialized));
     }
 
+    public function testObjectDeSerializerWithAnyClass()
+    {
+        $obj = new TestObj();
+        $serialized_data = phore_serialize($obj);
+
+        // Dangerous mode: Allow all classes
+        $unserialized = phore_unserialize($serialized_data, true);
+
+        self::assertEquals(TestObj::class, get_class($unserialized));
+    }
 
     public function testObjectDeserialisationWithExplicitClasses()
     {
