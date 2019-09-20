@@ -296,6 +296,28 @@ function phore_json_pretty_print(string $json) : string
 
 
 
+function phore_serialize($input) : string
+{
+    return serialize($input);
+}
+
+/**
+ * Safe unserialize a string serialized with phore_serialize()
+ *
+ * The second parameter defines, how serialize deals with classes:
+ * - false: (default): Don't allow object deserialisation at all
+ * - true: Allow any object (dangerous! see https://www.php.net/manual/de/function.unserialize.php )
+ * - [class1::class, class2::class]: Array of allowed class-names
+ *
+ * @param string $input
+ * @param bool|string[] $allowedClasses
+ * @return mixed
+ */
+function phore_unserialize(string $input, $allowedClasses=false)
+{
+    return unserialize($input, ["allowed_classes" => $allowedClasses]);
+}
+
 function phore_json_encode($input) : string
 {
     return json_encode($input, JSON_PRESERVE_ZERO_FRACTION);
