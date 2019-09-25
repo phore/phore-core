@@ -489,6 +489,5 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
 function phore_getopt(string $options, array $longopts = [], int &$optind = null) : PhoreGetOptResult
 {
     $opt = getopt($options, $longopts, $optind);
-    print_r ($opt);
     return new PhoreGetOptResult($opt, $optind);
 }
