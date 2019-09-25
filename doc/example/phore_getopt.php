@@ -3,6 +3,27 @@
 
 require __DIR__ . "/../../vendor/autoload.php";
 
+// Load the options
+$opts = phore_getopt(
+    "hf:", // -h , -f string
+    [
+        "action:"  // --action string
+    ]
+);
+
+if ($opts->has("h") || $opts->has("help")) {
+    printHelp();
+    exit;
+}
+
+
+echo "\nargument -f:        {$opts->get("f")}";
+echo "\nargument --action   ". implode (", ", $opts->getArr("action", []));
+echo "\n";
+
+
+
+
 function printHelp(string $errorMsg=null)
 {
     if ($errorMsg !== null)
@@ -24,23 +45,3 @@ Commands:
 
 EOT;
 }
-
-// Load the options
-$opts = phore_getopt(
-    "hf:", // -h , -f string
-    [
-        "action:"  // --action string
-    ]
-
-);
-
-if ($opts->has("h") || $opts->has("help")) {
-    printHelp();
-    exit;
-}
-
-
-echo "\nargument -f:        {$opts->get("f")}";
-echo "\nargument --action   ". implode (", ", $opts->getArr("action", []));
-echo "\n";
-
