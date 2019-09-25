@@ -3,7 +3,17 @@
 
 namespace Phore\Core\Helper;
 
-
+/**
+ * Class PhoreConsoleColor
+ *
+ * <pre>
+ * PhoreConsoleColor::SetFg("red");
+ * echo "hello";
+ * PhoreConsoleColor::Default();
+ * </pre>
+ *
+ * @package Phore\Core\Helper
+ */
 class PhoreConsoleColor
 {
     const FG = [
@@ -34,6 +44,7 @@ class PhoreConsoleColor
         'cyan'      => '46',
         'light_gray'=> '47'
     ];
+
 
     public static function SetFg(string $color)
     {
