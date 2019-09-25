@@ -154,17 +154,19 @@ function phore_array_transform (array $input, callable $callback) : array
  * @param callable $escaperFn
  * @return string
  */
-function phore_escape (string $cmd, array $args, callable $escaperFn) : string
+function phore_escape (string $cmd, array $args, callable $escaperFn, bool $softFail=false) : string
 {
     $argsCounter = 0;
     $cmd = preg_replace_callback( '/\?|\:[a-z0-9_\-]+|\{[a-z0-9_\-]+\}/i',
-        function ($match) use (&$argsCounter, &$args, $escaperFn) {
+        function ($match) use (&$argsCounter, &$args, $escaperFn, $softFail) {
             if ($match[0] === '?') {
                 if(! isset($args[$argsCounter])){
+                    if ($softFail)
+                        return "?";
                     throw new \Exception("Index $argsCounter missing");
                 }
                 $argsCounter++;
-                return escapeshellarg(array_shift($args));
+                return $escaperFn(array_shift($args));
             }
             if ($match[0][0] === "{") {
                 $key = substr($match[0], 1, -1);
@@ -172,6 +174,8 @@ function phore_escape (string $cmd, array $args, callable $escaperFn) : string
                 $key = substr($match[0], 1);
             }
             if (!isset($args[$key])){
+                if ($softFail)
+                    return $match[0];
                 throw new \Exception("Key '$key' not found");
             }
             return $escaperFn($args[$key], $key);
