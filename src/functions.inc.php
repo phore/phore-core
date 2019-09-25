@@ -6,6 +6,8 @@
  * Time: 11:52
  */
 
+use Phore\Core\Helper\PhoreGetOptResult;
+
 
 /**
  * Pluck elements from arrays
@@ -237,7 +239,7 @@ function phore_assert_str_alnum($input, array $allowedChars=[], Exception $throw
 
 /**
  * Print json nicely
- * 
+ *
  * @param $json
  * @return string
  */
@@ -461,4 +463,22 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
 }
 
 
+/**
+ * Parse command line options
+ *
+ * See https://www.php.net/manual/en/function.getopt.php for information
+ *
+ * <example>
+ * </example>
+ *
+ * @param string $options
+ * @param array $longopts
+ * @param int|null $optind
+ * @return PhoreGetOptResult
+ */
+function phore_getopt(string $options, array $longopts = [], int &$optind = null) : PhoreGetOptResult
+{
+    $opt = getopt($options, $longopts, $optind);
+    return new PhoreGetOptResult($opt, $optind);
+}
 
