@@ -491,3 +491,4 @@ function phore_getopt(string $options, array $longopts = [], int &$optind = null
     $opt = getopt($options, $longopts, $optind);
     return new PhoreGetOptResult($opt, $optind);
 }
+
