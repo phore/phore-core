@@ -468,9 +468,18 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
  *
  * See https://www.php.net/manual/en/function.getopt.php for information
  *
- * <example>
- * </example>
+ * <pre>
+ * $opts = phore_getopt("hf::", ["file::"]);
  *
+ * // cmd-call: script.php -h -f abcd --file file1 --file file2
+ *
+ * assert( true === $opts->has("h") );
+ * assert( "abcd" === $opts->get("f") );
+ * assert( ["file1", "file2"] === $opts->getArr("file") );
+ * assert( "default" === $opts->get("missing", "default") );
+ * </pre>
+ *
+ * @see https://github.com/phore/phore-core/doc/examples/phore_getopt.php Examples
  * @param string $options
  * @param array $longopts
  * @param int|null $optind
@@ -481,4 +490,3 @@ function phore_getopt(string $options, array $longopts = [], int &$optind = null
     $opt = getopt($options, $longopts, $optind);
     return new PhoreGetOptResult($opt, $optind);
 }
-
