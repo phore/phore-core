@@ -469,7 +469,7 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
  * Wrapper around php function 'getopt()'
  *
  * <pre>
- * $opts = phore_getopt("hf::", ["file::"]);
+ * $opts = phore_getopt("hf:", ["file:"]);
  *
  * // cmd-call: script.php -h -f abcd --file file1 --file file2
  *
@@ -489,5 +489,6 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
 function phore_getopt(string $options, array $longopts = [], int &$optind = null) : PhoreGetOptResult
 {
     $opt = getopt($options, $longopts, $optind);
+    print_r ($opt);
     return new PhoreGetOptResult($opt, $optind);
 }

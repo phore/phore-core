@@ -19,13 +19,13 @@ class PhoreGetOptResult
         $this->optind = $optind;
     }
 
-    public function has(string $key)
+    public function has(string $key) : bool
     {
         return isset ($this->result[$key]);
     }
 
 
-    public function get(string $key, $default=null) : string
+    public function get(string $key, $default=null) : ?string
     {
         if ( ! $this->has($key)) {
             if ($default instanceof \Exception)
@@ -36,7 +36,7 @@ class PhoreGetOptResult
 
     }
 
-    public function getArr(string $key, $default=null) : array
+    public function getArr(string $key, $default=null) : ?array
     {
         if ( ! $this->has($key)) {
             if ($default instanceof \Exception)

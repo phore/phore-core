@@ -25,7 +25,14 @@ Commands:
 EOT;
 }
 
-$opts = phore_getopt("hf::", "action::");
+// Load the options
+$opts = phore_getopt(
+    "hf:", // -h , -f string
+    [
+        "action:"  // --action string
+    ]
+
+);
 
 if ($opts->has("h") || $opts->has("help")) {
     printHelp();
