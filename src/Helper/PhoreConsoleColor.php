@@ -4,7 +4,7 @@
 namespace Phore\Core\Helper;
 
 
-class ConsoleColor
+class PhoreConsoleColor
 {
     const FG = [
         'black'         => '0;30',
