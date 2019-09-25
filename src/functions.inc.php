@@ -466,7 +466,7 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
 /**
  * Parse command line options
  *
- * See https://www.php.net/manual/en/function.getopt.php for information
+ * Wrapper around php function 'getopt()'
  *
  * <pre>
  * $opts = phore_getopt("hf::", ["file::"]);
@@ -479,7 +479,8 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
  * assert( "default" === $opts->get("missing", "default") );
  * </pre>
  *
- * @see https://github.com/phore/phore-core/doc/examples/phore_getopt.php Examples
+ * @see https://github.com/phore/phore-core/blob/master/doc/example/phore_getopt.php
+ * @see https://www.php.net/manual/en/function.getopt.php
  * @param string $options
  * @param array $longopts
  * @param int|null $optind
