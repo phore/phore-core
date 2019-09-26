@@ -46,18 +46,16 @@ class PhoreConsoleColor
     ];
 
 
-    public static function SetFg(string $color)
+    public static function SetColor(string $fg_color=null, string $bg_color=null)
     {
-        echo "\33[" . self::FG[$color] . "m";
-    }
-
-    public static function SetBg(string $color)
-    {
-        echo "\33[" . self::BG[$color] . "m";
+        $fg = $fg_color !== null ? self::FG[$fg_color] : "";
+        $bg = $bg_color !== null ? self::BG[$bg_color] : "";
+        echo "\033[" . $fg . "m";
+        echo "\033[" . $bg . "m";
     }
 
     public static function Default()
     {
-        echo "\33[0m";
+        echo "\033[0m";
     }
 }
