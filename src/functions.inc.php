@@ -131,6 +131,16 @@ function phore_hash($input, bool $secure=false, bool $raw=false) : string
  * Transform the input array into another array using the callback function
  * applied on each element of $input
  *
+ * <pre>
+ * $tbl = phore_array_transform($input, function ($key, $value) {
+ *     return [
+ *          "value" => $value,
+ *          "key" => $key
+ *     ]
+ * });
+ * </pre>
+ * 
+ * 
  * @param array $input
  * @param callable $callback
  * @return array
