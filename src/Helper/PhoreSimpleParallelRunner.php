@@ -18,7 +18,7 @@ class PhoreSimpleParallelRunner
     public static function Run(callable $function, int $nprocs=1)
     {
         $pids= [];
-        for ($i=0; $i<4; $i++) {
+        for ($i=0; $i<$nprocs; $i++) {
             $pid = pcntl_fork();
             if ($pid === -1)
                 throw new \Exception("Cannot fork()");
