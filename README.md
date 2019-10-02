@@ -1,5 +1,8 @@
 # Phore core library
 
+[![Actions Status](https://github.com/phore/phore-core/workflows/tests/badge.svg)](https://github.com/phore/phore-core/actions)
+
+
 ## Install
 
 ```
