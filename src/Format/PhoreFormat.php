@@ -25,7 +25,7 @@ class PhoreFormat
      * @param $dateInterval \DateInterval|int
      * @return string
      */
-    public function dateInterval($dateInterval)
+    public function dateInterval($dateInterval, bool $short=false)
     {
         $rest = $dateInterval;
 
@@ -34,6 +34,8 @@ class PhoreFormat
         $y = (int)($rest / 3.154e+7);
         if ($y > 0) {
             $r .= $y . " years ";
+            if ($short)
+                return $r;
             $rest -= $y * 3.154e+7;
             $out = true;
         }
@@ -41,12 +43,16 @@ class PhoreFormat
         $m = (int)($rest / 2.628e+6);
         if ($m > 0 || $out) {
             $r .= $m . " months ";
+            if ($short)
+                return $r;
             $rest -= $m * 2.628e+6;
             $out = true;
         }
         $d = (int)($rest / 86400);
         if ($d > 0 || $out) {
             $r .= $d . " days ";
+            if ($short)
+                return $r;
             $rest -= $d * 86400;
             $out = true;
         }
@@ -54,6 +60,8 @@ class PhoreFormat
         $h = (int)($rest / 3600);
         if ($h > 0 || $out) {
             $r .= $h . "h ";
+            if ($short)
+                return $r;
             $rest -= $h * 3600;
             $out = true;
         }
@@ -61,6 +69,8 @@ class PhoreFormat
         $i = (int)($rest / 60);
         if ($i > 0 || $out) {
             $r .= $i . "min ";
+            if ($short)
+                return $r;
             $rest -= $i * 60;
             $out = true;
         }
