@@ -39,6 +39,22 @@ class _PhoreAssert
         return $this;
     }
 
+
+    /**
+     * Validate the value is safe for url injection.
+     *
+     * @return string|null
+     * @throws InvalidDataException
+     */
+    public function safeString(array $allowChars = [], \Exception $exception = null)
+    {
+        if ( ! phore_assert_str_alnum($this->value, $allowChars, $exception)) {
+            return null;
+        }
+        return $this->value;
+    }
+
+
     /**
      * Verify value is a valid e-mail address
      * 

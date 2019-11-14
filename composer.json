@@ -2,7 +2,7 @@
   "name": "phore/core",
   "description": "Phore core library",
   "license": "MIT",
-  "homepage": "https://infracamp.org/phore/",
+  "homepage": "https://infracamp.org/project/phore",
   "authors": [
     { "name": "Matthias Leuffen", "email": "m@tth.es" }
   ],

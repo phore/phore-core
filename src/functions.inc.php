@@ -6,6 +6,8 @@
  * Time: 11:52
  */
 
+use Phore\Core\Helper\PhoreGetOptResult;
+
 
 /**
  * Pluck elements from arrays
@@ -129,6 +131,16 @@ function phore_hash($input, bool $secure=false, bool $raw=false) : string
  * Transform the input array into another array using the callback function
  * applied on each element of $input
  *
+ * <pre>
+ * $tbl = phore_array_transform($input, function ($key, $value) {
+ *     return [
+ *          "value" => $value,
+ *          "key" => $key
+ *     ]
+ * });
+ * </pre>
+ * 
+ * 
  * @param array $input
  * @param callable $callback
  * @return array
@@ -154,17 +166,19 @@ function phore_array_transform (array $input, callable $callback) : array
  * @param callable $escaperFn
  * @return string
  */
-function phore_escape (string $cmd, array $args, callable $escaperFn) : string
+function phore_escape (string $cmd, array $args, callable $escaperFn, bool $softFail=false) : string
 {
     $argsCounter = 0;
     $cmd = preg_replace_callback( '/\?|\:[a-z0-9_\-]+|\{[a-z0-9_\-]+\}/i',
-        function ($match) use (&$argsCounter, &$args, $escaperFn) {
+        function ($match) use (&$argsCounter, &$args, $escaperFn, $softFail) {
             if ($match[0] === '?') {
                 if(! isset($args[$argsCounter])){
+                    if ($softFail)
+                        return "?";
                     throw new \Exception("Index $argsCounter missing");
                 }
                 $argsCounter++;
-                return escapeshellarg(array_shift($args));
+                return $escaperFn(array_shift($args));
             }
             if ($match[0][0] === "{") {
                 $key = substr($match[0], 1, -1);
@@ -172,6 +186,8 @@ function phore_escape (string $cmd, array $args, callable $escaperFn) : string
                 $key = substr($match[0], 1);
             }
             if (!isset($args[$key])){
+                if ($softFail)
+                    return $match[0];
                 throw new \Exception("Key '$key' not found");
             }
             return $escaperFn($args[$key], $key);
@@ -233,7 +249,7 @@ function phore_assert_str_alnum($input, array $allowedChars=[], Exception $throw
 
 /**
  * Print json nicely
- * 
+ *
  * @param $json
  * @return string
  */
@@ -457,4 +473,32 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
 }
 
 
+/**
+ * Parse command line options
+ *
+ * Wrapper around php function 'getopt()'
+ *
+ * <pre>
+ * $opts = phore_getopt("hf:", ["file:"]);
+ *
+ * // cmd-call: script.php -h -f abcd --file file1 --file file2
+ *
+ * assert( true === $opts->has("h") );
+ * assert( "abcd" === $opts->get("f") );
+ * assert( ["file1", "file2"] === $opts->getArr("file") );
+ * assert( "default" === $opts->get("missing", "default") );
+ * </pre>
+ *
+ * @see https://github.com/phore/phore-core/blob/master/doc/example/phore_getopt.php
+ * @see https://www.php.net/manual/en/function.getopt.php
+ * @param string $options
+ * @param array $longopts
+ * @param int|null $optind
+ * @return PhoreGetOptResult
+ */
+function phore_getopt(string $options, array $longopts = [], int &$optind = null) : PhoreGetOptResult
+{
+    $opt = getopt($options, $longopts, $optind);
+    return new PhoreGetOptResult($opt, $optind);
+}
 
