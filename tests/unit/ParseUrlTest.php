@@ -40,4 +40,21 @@ class ParseUrlTest extends TestCase
         $this->assertEquals("/path", $url->path);
     }
 
+    public function testQueryString()
+    {
+        $url = phore_parse_url("https://host/path", "http://hostdef:80?key=val");
+
+        $this->assertEquals(["key"=>"val"], $url->getQueryVal());
+        $this->assertEquals("val", $url->getQueryVal("key"));
+        $this->assertEquals("def", $url->getQueryVal("nonKey", "def"));
+
+    }
+    public function testQueryStringWithEmptyQuery()
+    {
+        $url = phore_parse_url("https://host/path", "http://hostdef:80");
+
+        $this->assertEquals([], $url->getQueryVal());
+        $this->assertEquals("def", $url->getQueryVal("nonKey", "def"));
+
+    }
 }

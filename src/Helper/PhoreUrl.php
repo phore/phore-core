@@ -26,4 +26,25 @@ class PhoreUrl
     public $query;
 
     public $fragment;
+
+
+    /**
+     * Return the parsed query string
+     *
+     * If parameter 1 is set, returns the content of this index in query stirng
+     * or default if not available.
+     *
+     * @param string|null $key
+     * @param null $default
+     * @return null
+     * @throws \Exception
+     */
+    public function getQueryVal(string $key = null, $default=null)
+    {
+        parse_str($this->query, $result);
+        if ($key === null)
+            return $result;
+        return phore_pluck($key, $result, $default);
+    }
+
 }
