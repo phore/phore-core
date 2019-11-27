@@ -535,3 +535,29 @@ function phore_parse_url(string $url, string $default=null) : \Phore\Core\Helper
     return $retUrlObj;
 }
 
+
+/**
+ * Run callable only once per script run
+ *
+ * Return the result of previous calls
+ *
+ * If parameter 2 is specified, add the key to the position
+ * in code
+ *
+ * @param callable $callOnce
+ * @param string $key
+ * @return mixed
+ */
+function phore_once(callable $callOnce, string $key="")
+{
+    static $runs = [];
+
+    $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
+    $key = $backtrace[0]["file"] . $backtrace[0]["line"] . $key;
+    if (array_key_exists($key, $runs))
+        return $runs[$key];
+    $runs[$key] = $ret = $callOnce();
+    return $ret;
+}
+
+
