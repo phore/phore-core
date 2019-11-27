@@ -502,3 +502,36 @@ function phore_getopt(string $options, array $longopts = [], int &$optind = null
     return new PhoreGetOptResult($opt, $optind);
 }
 
+
+/**
+ * Parse a url and return PhoreUrl object
+ *
+ * @param string $url
+ * @param string|null $default
+ * @return \Phore\Core\Helper\PhoreUrl
+ */
+function phore_parse_url(string $url, string $default=null) : \Phore\Core\Helper\PhoreUrl
+{
+    $schema = parse_url($url);
+    if ($schema === false)
+        throw new InvalidArgumentException("Cannot parse url in parameter 1: '$url'");
+
+    $preset = [
+        "scheme" => null, "host" => null, "port" => null, "user" => null, "pass" => null,
+        "path" => null, "query" => null, "fragment" => null
+    ];
+
+    if ($default !== null) {
+        $presetDefaults = parse_url($default);
+        if ($presetDefaults === false)
+            throw new InvalidArgumentException("Cannot parse default url in parameter 2: '$default'");
+        $preset = array_merge($preset, $presetDefaults);
+    }
+    $schema = array_merge($preset, $schema);
+
+    $retUrlObj = new \Phore\Core\Helper\PhoreUrl();
+    foreach ($schema as $key => $val)
+        $retUrlObj->$key = $val;
+    return $retUrlObj;
+}
+
