@@ -31,6 +31,10 @@ function phore_pluck ($key, &$data, $default=null)
         return $data;
 
     $asArray = false;
+    if (is_array($default)) {
+        $asArray = true;
+    }
+
     $curKey = array_shift($key);
     if (endsWith($curKey, "[]")) {
         $curKey = substr($curKey, 0, -2);

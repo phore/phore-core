@@ -59,4 +59,22 @@ class PluckTest extends TestCase
         $this->assertEquals([], phore_pluck("a[].b", $input));
      }
 
+
+     public function testPluckReturnsAlwaysArrayIfDefaultIsArray ()
+     {
+
+         $data = [
+             "a" => null,
+             "b" => false,
+             "c" => "some string",
+             "d" => ["array"]
+         ];
+
+         $this->assertEquals([], phore_pluck("a", $data, []));
+         $this->assertEquals([], phore_pluck("b", $data, []));
+         $this->assertEquals([], phore_pluck("c", $data, []));
+         $this->assertEquals(["array"], phore_pluck("d", $data, []));
+
+     }
+
 }
