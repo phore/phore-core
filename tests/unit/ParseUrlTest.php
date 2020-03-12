@@ -57,4 +57,10 @@ class ParseUrlTest extends TestCase
         $this->assertEquals("def", $url->getQueryVal("nonKey", "def"));
 
     }
+
+    public function testPathBeginningWithSlash()
+    {
+        $url = phore_parse_url("file:///path/to/file.txt");
+        $this->assertEquals("/path/to/file.txt", $url->path);
+    }
 }
