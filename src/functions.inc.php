@@ -57,7 +57,7 @@ function phore_pluck ($key, &$data, $default=null)
         }
         $ret = [];
         foreach ($curData as $index => &$curArrData) {
-            $ret[] = phore_pluck($key, $curArrData, $default);
+            $ret[$index] = phore_pluck($key, $curArrData, $default);
         }
         return $ret;
     }
@@ -143,8 +143,8 @@ function phore_hash($input, bool $secure=false, bool $raw=false) : string
  *     ]
  * });
  * </pre>
- * 
- * 
+ *
+ *
  * @param array $input
  * @param callable $callback
  * @return array
