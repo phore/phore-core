@@ -89,4 +89,16 @@ class PluckTest extends TestCase
          $this->assertEquals(["b1"=>["b1-data"],"b2" => ["b2-data"]], $res);
      }
 
+    public function testPluckOnNumericArray()
+     {
+         $data = [
+             "a" => [
+                 ["b1-data"],
+                 ["b2-data"]
+             ]
+         ];
+         $res = phore_pluck("a", $data, []);
+         $this->assertEquals([["b1-data"],["b2-data"]], $res);
+     }
+
 }
