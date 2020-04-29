@@ -29,5 +29,4 @@ class PhoreJsonTest extends TestCase
         $out = phore_json_decode(phore_json_encode($in));
 
     }
-
 }

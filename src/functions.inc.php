@@ -340,7 +340,10 @@ function phore_unserialize(string $input, $allowedClasses=false)
 
 function phore_json_encode($input) : string
 {
-    return json_encode($input, JSON_PRESERVE_ZERO_FRACTION);
+    $ret = json_encode($input, JSON_PRESERVE_ZERO_FRACTION);
+    if ($ret === false)
+        throw new InvalidArgumentException("Cannot json_encode() input data: " . json_last_error_msg());
+    return $ret;
 }
 
 /**
