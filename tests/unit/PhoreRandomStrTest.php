@@ -18,7 +18,7 @@ class PhoreRandomStrTest extends TestCase
     public function testRandomStrMatchesSize()
     {
         $ret = phore_random_str(120);
-        echo $ret;
+      //  echo $ret;
         $this->assertEquals(120, strlen($ret));
     }
 
@@ -29,7 +29,7 @@ class PhoreRandomStrTest extends TestCase
         $str2 = phore_random_str(20);
 
         $this->assertNotEquals($str1, $str2);
-        echo $str1;
+     //   echo $str1;
 
     }
 
