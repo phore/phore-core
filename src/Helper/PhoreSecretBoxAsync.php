@@ -7,12 +7,13 @@ use stdClass;
 
 class PhoreSecretBoxAsync
 {
+    const PRECYPHER = "EA1-";
     private $ttl;
     private $gzip;
 
     public function __construct(int $ttl=null, bool $gzip=true)
     {       
-        if ( ! function_exists("sodium_crypto_secretbox"))
+        if ( ! function_exists("sodium_crypto_box_seal"))
             throw new \InvalidArgumentException("libsodium library (libsodium-ext) missing");
 
         $this->ttl = $ttl;
@@ -21,11 +22,11 @@ class PhoreSecretBoxAsync
 
     public function createKeyPair()
     {
-        $keyObj=new stdClass();
         $keypair = sodium_crypto_box_keypair();
-        $keyObj->public_key = base64_encode(sodium_crypto_box_publickey($keypair));
-        $keyObj->private_key = base64_encode(sodium_crypto_box_secretkey($keypair));
-        return json_encode($keyObj);
+        return [
+            "public_key" => base64_encode(sodium_crypto_box_publickey($keypair)),
+            "private_key" => base64_encode(sodium_crypto_box_secretkey($keypair))
+        ];
     }
 
 
@@ -35,7 +36,7 @@ class PhoreSecretBoxAsync
         if ($public_key === false) {
             throw new \InvalidArgumentException('Decryption failed. Incorrect base64 public key enconding.');
         } 
-        
+
         $validTillTs = null;
         if ($this->ttl !== null) {
             $validTillTs = time() + $this->ttl;
@@ -50,30 +51,28 @@ class PhoreSecretBoxAsync
             sodium_crypto_box_seal($plainData, $public_key)
         );
         sodium_memzero($plainData);
-        $cipher = "E1-" . $cipher;
+        $cipher = PhoreSecretBoxAsync::PRECYPHER . $cipher;
         return $cipher;
     }
 
-    public function decrypt(string $cipher, $public_key, $private_key)
+    public function decrypt(string $cipher, string $private_key)
     {
-        if ( ! substr($cipher, 0, 3) === "E1-") {
-            throw new \InvalidArgumentException("Decryption failed. Message has invalid E1 encrypted data prefix.");
+        if ( ! substr($cipher, 0, 3) === PhoreSecretBoxAsync::PRECYPHER) {
+            throw new \InvalidArgumentException("Decryption failed. Message has invalid EA1 encrypted data prefix.");
         }
         $cipher = substr($cipher, 3);
         $cipher = base64_decode($cipher);
-        $public_key = base64_decode($public_key);
+        
         $private_key = base64_decode($private_key);
         // check for general failures
         if ($cipher === false) {
             throw new \InvalidArgumentException('Decryption failed. Incorrect base64 cipher enconding.');
         }
-        if ($public_key === false) {
-            throw new \InvalidArgumentException('Decryption failed. Incorrect base64 public key enconding.');
-        }        
         if ($private_key === false) {
             throw new \InvalidArgumentException('Decryption failed. Incorrect base64 private key enconding.');
         }
 
+        $public_key = sodium_crypto_box_publickey_from_secretkey($private_key);
         $keypair = sodium_crypto_box_keypair_from_secretkey_and_publickey($private_key, $public_key);
         // check for incomplete message. CRYPTO_SECRETBOX_MACBYTES doesn't seem to exist in this version...
         if (!defined('CRYPTO_SECRETBOX_MACBYTES')) {

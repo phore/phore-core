@@ -20,10 +20,10 @@ class PhoreSecretBoxAsyncTest extends TestCase
         $input = phore_random_str(45);
         
         $encryptor = new PhoreSecretBoxAsync();
-        $keypair = json_decode($encryptor->createKeyPair());
+        $keypair = $encryptor->createKeyPair();
 
-        $encryptedText = $encryptor->encrypt($input, $keypair->public_key);
-        $decryptedText = $encryptor->decrypt($encryptedText, $keypair->public_key, $keypair->private_key);
+        $encryptedText = $encryptor->encrypt($input, $keypair["public_key"]);
+        $decryptedText = $encryptor->decrypt($encryptedText, $keypair["private_key"]);
 
         $this->assertEquals($input, $decryptedText);
     }
@@ -34,10 +34,10 @@ class PhoreSecretBoxAsyncTest extends TestCase
         
         $encryptor = new PhoreSecretBoxAsync();
 
-        $keypair = json_decode($encryptor->createKeyPair());
+        $keypair = $encryptor->createKeyPair();
 
-        $encryptedText = $encryptor->encrypt($input, $keypair->public_key);
-        $decryptedText = $encryptor->decrypt($encryptedText, $keypair->public_key, $keypair->private_key);
+        $encryptedText = $encryptor->encrypt($input, $keypair["public_key"]);
+        $decryptedText = $encryptor->decrypt($encryptedText, $keypair["private_key"]);
         
         $this->assertEquals($input, $decryptedText);
     }
@@ -45,10 +45,10 @@ class PhoreSecretBoxAsyncTest extends TestCase
     public function testDecryption ()
     {
 
-         $mockInput = "E1-28dCQ34lZB1ZRjbSecvGV0yVR2yFiLzeU0Rihq0dRwKI7X98H10aOcJKrbMHPW76ByM2iOooSo6oi2R65Ab8DM0NigQLt8+AioTF5gqSiUdL20R0NFL/u5RCLPyKpop9YGj4ViUKQZEWmgFyczNExRJCng==";
+         $mockInput = "EA1-28dCQ34lZB1ZRjbSecvGV0yVR2yFiLzeU0Rihq0dRwKI7X98H10aOcJKrbMHPW76ByM2iOooSo6oi2R65Ab8DM0NigQLt8+AioTF5gqSiUdL20R0NFL/u5RCLPyKpop9YGj4ViUKQZEWmgFyczNExRJCng==";
 
          $encryptor = new PhoreSecretBoxASync();
 
-         $this->assertEquals("SecretSecretSecret", $encryptor->decrypt($mockInput, "N2WpcHSvMFHKVJFNFCpITqxvZfeGVoLASoQkWlWaEm0=", "795GkTRjTUCFUsw2nAGnD\/9QU0YvSFyQ\/ljCnW4+Zds="));
+         $this->assertEquals("SecretSecretSecret", $encryptor->decrypt($mockInput, "795GkTRjTUCFUsw2nAGnD\/9QU0YvSFyQ\/ljCnW4+Zds="));
     }   
 }
