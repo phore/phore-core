@@ -74,13 +74,6 @@ class PhoreSecretBoxAsync
 
         $public_key = sodium_crypto_box_publickey_from_secretkey($private_key);
         $keypair = sodium_crypto_box_keypair_from_secretkey_and_publickey($private_key, $public_key);
-        // check for incomplete message. CRYPTO_SECRETBOX_MACBYTES doesn't seem to exist in this version...
-        if (!defined('CRYPTO_SECRETBOX_MACBYTES')) {
-            define('CRYPTO_SECRETBOX_MACBYTES', 16);
-        }
-        if (mb_strlen($cipher, '8bit') < (SODIUM_CRYPTO_SECRETBOX_NONCEBYTES + CRYPTO_SECRETBOX_MACBYTES)) {
-            throw new \Exception('Decryption failed: mac/nonce ');
-        }
 
         // decrypt it
         $message = sodium_crypto_box_seal_open($cipher, $keypair);
