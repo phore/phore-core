@@ -32,7 +32,10 @@ class PhoreSecretBoxAsync
     public function encrypt(string $plainData, string $public_key)
     {
         $public_key = base64_decode($public_key);
-
+        if ($public_key === false) {
+            throw new \InvalidArgumentException('Decryption failed. Incorrect base64 public key enconding.');
+        } 
+        
         $validTillTs = null;
         if ($this->ttl !== null) {
             $validTillTs = time() + $this->ttl;
