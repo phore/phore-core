@@ -63,4 +63,40 @@ class ParseUrlTest extends TestCase
         $url = phore_parse_url("file:///path/to/file.txt");
         $this->assertEquals("/path/to/file.txt", $url->path);
     }
+
+
+    public function testBuildUrl()
+    {
+        $origUrl = "http://user:pass@server.name/path/to?someParam&p1=val1#fragment";
+        $url = phore_parse_url($origUrl);
+        $this->assertEquals($origUrl, (string)$url);
+    }
+
+    public function testWithParamOverwritesOriginalValue()
+    {
+        $origUrl = "http://server.name?someParam&p1=val1";
+        $url = phore_parse_url($origUrl);
+        $url = $url->withQueryParam("p1", "newVal");
+
+        $this->assertEquals("http://server.name?someParam=&p1=newVal", (string)$url);
+    }
+
+    public function testWithParamUnsetsParam()
+    {
+        $origUrl = "http://server.name?someParam&p1=val1";
+        $url = phore_parse_url($origUrl);
+        $url = $url->withQueryParam("p1", null);
+
+        $this->assertEquals("http://server.name?someParam=", (string)$url);
+    }
+
+    public function testWithParamsUnsetsAllParams()
+    {
+        $origUrl = "http://server.name?someParam&p1=val1";
+        $url = phore_parse_url($origUrl);
+        $url = $url->withQueryParam("p1", null);
+
+        $this->assertEquals("http://server.name?someParam=", (string)$url);
+    }
+
 }
