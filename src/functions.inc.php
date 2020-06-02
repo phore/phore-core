@@ -176,7 +176,7 @@ function phore_escape (string $cmd, array $args, callable $escaperFn, bool $soft
     $cmd = preg_replace_callback( '/\?|\:[a-z0-9_\-]+|\{[a-z0-9_\-]+\}/i',
         function ($match) use (&$argsCounter, &$args, $escaperFn, $softFail) {
             if ($match[0] === '?') {
-                if(! isset($args[$argsCounter])){
+                if(! isset($args[0])){
                     if ($softFail)
                         return "?";
                     throw new \Exception("Index $argsCounter missing");
