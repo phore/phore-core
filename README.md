@@ -23,6 +23,10 @@ assert( "data" === phore_pluck(["some", "path"], $data) );
 
 assert( "fail" === phore_pluck("unknown", $data, "fail") );
 phore_pluck("unknown", $data, new InvalidArgumentException("path missing"));
+
+
+// if default is array, phore_pluck will ensure to return array
+assert ( [] == phore_pluck("some.path", $data, []) );
 ```
 
 

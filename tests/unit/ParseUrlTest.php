@@ -90,6 +90,8 @@ class ParseUrlTest extends TestCase
         $this->assertEquals("http://server.name?someParam=", (string)$url);
     }
 
+
+
     public function testWithParamsUnsetsAllParams()
     {
         $origUrl = "http://server.name?someParam&p1=val1";
