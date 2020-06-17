@@ -96,9 +96,9 @@ class ParseUrlTest extends TestCase
     {
         $origUrl = "http://server.name?someParam&p1=val1";
         $url = phore_parse_url($origUrl);
-        $url = $url->withQueryParam("p1", null);
+        $url = $url->withQueryParams();
 
-        $this->assertEquals("http://server.name?someParam=", (string)$url);
+        $this->assertEquals("http://server.name", (string)$url);
     }
 
 }
