@@ -75,6 +75,23 @@ class PhoreUrl
         return $new;
     }
 
+
+    /**
+     * Set / Unset User /password
+     * 
+     * @param string|null $user
+     * @param string|null $pass
+     * @return PhoreUrl
+     */
+    public function withUserPass(string $user=null, string $pass = null) : self
+    {
+        $new = clone($this);
+        $new->user = $user;
+        $new->pass = $pass;
+        return $new;
+    }
+    
+
     /**
      * Set/Add a new query parameter to the url and create
      * a new instance of this object
@@ -151,9 +168,16 @@ class PhoreUrl
      */
     public function __toString()
     {
-        $url = "{$this->scheme}://";
+        $url = "";
+        if ($this->scheme !== null)
+            $url = "{$this->scheme}://";
+        
         if ($this->user !== null || $this->pass !== null) {
-            $url .= urlencode($this->user) . ":" . urlencode($this->pass) . "@";
+            if ($this->pass === null) {
+                $url .= urlencode($this->user) . "@";
+            } else {
+                $url .= urlencode($this->user) . ":" . urlencode($this->pass) . "@";
+            }
         }
         $url .= $this->host;
         $url .= $this->path;
