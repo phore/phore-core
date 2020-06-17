@@ -101,4 +101,12 @@ class ParseUrlTest extends TestCase
         $this->assertEquals("http://server.name", (string)$url);
     }
 
+    public function testWithUserPassword()
+    {
+        $origUrl = "http://server.name?someParam&p1=val1";
+        $url = phore_parse_url($origUrl);
+        $url = $url->withQueryParams();
+
+        $this->assertEquals("http://server.name", (string)$url);
+    }
 }
