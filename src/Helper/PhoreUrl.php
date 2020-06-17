@@ -181,11 +181,11 @@ class PhoreUrl
         }
         $url .= $this->host;
         $url .= $this->path;
-        if ($this->query !== null) {
+        if ($this->query !== null && $this->query !== "") {
             $url .= "?" . $this->query;
         }
 
-        if ($this->fragment !== null)
+        if ($this->fragment !== null && $this->fragment !== "")
             $url .= "#" . $this->fragment;
         return $url;
     }
