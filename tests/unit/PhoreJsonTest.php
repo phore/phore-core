@@ -29,4 +29,14 @@ class PhoreJsonTest extends TestCase
         $out = phore_json_decode(phore_json_encode($in));
 
     }
+
+
+    public function testEscaping()
+    {
+        $escaped = phore_json_encode(["data" => "/"]);
+        $this->assertEquals('{"data":"/"}', $escaped); // Don't escape slashes
+
+        $escaped = phore_json_decode($escaped);
+        $this->assertEquals(["data"=>"/"], $escaped);
+    }
 }
