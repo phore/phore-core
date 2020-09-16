@@ -91,10 +91,10 @@ class PhoreFormat
         if ($size > 1000) {
             return $this->number($size / 1000) . "kB";
         }
-        return $this->number($size / 1000) . "B";
+        return $this->number($size) . "B";
     }
 
 
 
-    
+
 }
