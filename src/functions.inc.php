@@ -287,7 +287,7 @@ function phore_assert_str_alnum($input, array $allowedChars=[], Exception $throw
  * @param $json
  * @return string
  */
-function phore_json_pretty_print(string $json) : string
+function phore_json_pretty_print(string $json, string $indent="\t") : string
 {
     $result = '';
     $level = 0;
@@ -336,7 +336,7 @@ function phore_json_pretty_print(string $json) : string
             $in_escape = true;
         }
         if( $new_line_level !== NULL ) {
-            $result .= "\n".str_repeat( "\t", $new_line_level );
+            $result .= "\n".str_repeat( $indent, $new_line_level );
         }
         $result .= $char.$post;
     }
