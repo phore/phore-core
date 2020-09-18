@@ -95,7 +95,12 @@ function phore_text_unindent(string $text) : string {
     return trim(str_replace("\n" . $matches[1], "\n", $text));
 }
 
-
+/**
+ * URL save base64 encoding (e.g. for JWT)
+ *
+ * @param string $data
+ * @return string
+ */
 function phore_base64url_encode(string $data) : string
 {
     $b64 = base64_encode($data);
@@ -104,6 +109,14 @@ function phore_base64url_encode(string $data) : string
     return strtr($b64, "+/=", "-_");
 }
 
+
+/**
+ * URL save base64 decoding (e.g. JWT)
+ *
+ * @param string $data
+ * @param bool $strict
+ * @return string|null
+ */
 function phore_base64url_decode(string $data, bool $strict=false) : ?string
 {
     $data = strtr($data, "-_", "+/");
