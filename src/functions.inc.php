@@ -96,6 +96,23 @@ function phore_text_unindent(string $text) : string {
 }
 
 
+function phore_base64url_encode(string $data) : string
+{
+    $b64 = base64_encode($data);
+    if ($b64 === false)
+        throw new InvalidArgumentException("Cannot base64 encode data");
+    return strtr($b64, "+/=", "-_");
+}
+
+function phore_base64url_decode(string $data, bool $strict=false) : ?string
+{
+    $data = strtr($data, "-_", "+/");
+    $result = base64_decode($data, $strict);
+    if ($result === false)
+        return null;
+    return $result;
+}
+
 
 function phore_format() : \Phore\Core\Format\PhoreFormat
 {
