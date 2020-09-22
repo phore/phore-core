@@ -106,7 +106,7 @@ function phore_base64url_encode(string $data) : string
     $b64 = base64_encode($data);
     if ($b64 === false)
         throw new InvalidArgumentException("Cannot base64 encode data");
-    return strtr($b64, "+/=", "-_");
+    return rtrim (strtr($b64, "+/", "-_"), "=");
 }
 
 
