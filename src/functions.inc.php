@@ -399,6 +399,7 @@ function phore_yaml_encode($input) : string
 {
     if ( ! function_exists("yaml_parse"))
         throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
+    ini_set("yaml.decode_php", false);
     return yaml_emit($input, YAML_UTF8_ENCODING);
 }
 
@@ -415,6 +416,7 @@ function phore_yaml_decode(string $input) : array
         throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
 
     try {
+        ini_set("yaml.decode_php", false);
         $ret = yaml_parse($input);
     } catch (ErrorException $e) {
         throw new InvalidArgumentException(
