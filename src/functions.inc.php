@@ -455,7 +455,7 @@ function phore_random_str (int $len = 12, $requireSodium=false) : string
             return $keysAvail[random_int(0, $keylen)];
         }
     ];
-    
+
     // If libsodium is installed: use it too.
     if (function_exists("\\Sodium\\randombytes_uniform")) {
         $fns[] = function () use ($keylen, $keysAvail) {
