@@ -368,9 +368,11 @@ function phore_unserialize(string $input, $allowedClasses=false)
     return unserialize($input, ["allowed_classes" => $allowedClasses]);
 }
 
-function phore_json_encode($input) : string
+function phore_json_encode($input, bool $prettyPrint=false) : string
 {
     $ret = json_encode($input, JSON_PRESERVE_ZERO_FRACTION|JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_INVALID_UTF8_SUBSTITUTE);
+    if ($prettyPrint === true)
+        $ret = phore_json_pretty_print($ret);
     if ($ret === false)
         throw new InvalidArgumentException("Cannot json_encode() input data: " . json_last_error_msg());
     return $ret;
