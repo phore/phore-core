@@ -54,10 +54,29 @@ class _PhoreAssert
         return $this->value;
     }
 
+    /**
+     * Validate the value is safe for url injection.
+     *
+     * @return string|null
+     * @throws InvalidDataException
+     */
+    public function safeFileNameComponentString(bool $allowSlash = false, \Exception $exception = null)
+    {
+        if (str_contains($this->value, "..")) {
+            if ($exception !== null)
+                throw $exception;
+            throw new InvalidDataException("String is not a save FileNameComponenentString: '$this->value'" );
+        }
+        $allowChars = ["."];
+        if ($allowSlash)
+            $allowChars[] = "/";
+        $this->safeString($allowChars, $exception);
+        return $this->value;
+    }
 
     /**
      * Verify value is a valid e-mail address
-     * 
+     *
      * @param \Exception|null $throwException
      * @throws InvalidDataException
      */
