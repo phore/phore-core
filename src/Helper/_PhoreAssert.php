@@ -60,7 +60,7 @@ class _PhoreAssert
      * @return string|null
      * @throws InvalidDataException
      */
-    public function safeFileNameComponentString(bool $allowSlash = false, \Exception $exception = null)
+    public function safeFileNameComponentString(bool $allowSlash = false, \Exception $exception = null) : string
     {
         if (str_contains($this->value, "..")) {
             if ($exception !== null)
