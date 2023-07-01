@@ -380,16 +380,22 @@ function phore_json_encode($input, bool $prettyPrint=false) : string
 
 /**
  * @param string $input
+ * @param class-string $cast
  * @return array
  * @throws InvalidArgumentException
  */
-function phore_json_decode(string $input) : array
+function phore_json_decode(string $input, string $cast = null) : array
 {
     $ret = json_decode($input, true, 512, JSON_PRESERVE_ZERO_FRACTION);
     if ($ret === null)
         throw new InvalidArgumentException("Cannot json_decode() input data: " . json_last_error_msg());
     if ( ! is_array($ret))
         throw new InvalidArgumentException("phore_json_decode(): Simple data import (string, int, bool) not supported.");
+    if ($cast !== null) {
+        if ( ! function_exists("phore_hydrate"))
+            throw new InvalidArgumentException("phore_hydrate() is missing. please install phore/hydrator.");
+        $ret = phore_hydrate($ret, $cast);
+    }
     return $ret;
 }
 
