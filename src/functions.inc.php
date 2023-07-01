@@ -377,14 +377,14 @@ function phore_json_encode($input, bool $prettyPrint=false) : string
         throw new InvalidArgumentException("Cannot json_encode() input data: " . json_last_error_msg());
     return $ret;
 }
-
 /**
  * @param string $input
- * @param class-string $cast
- * @return array
+ * @param class-string<T> $cast
+ * @template T
+ * @return array|T
  * @throws InvalidArgumentException
  */
-function phore_json_decode(string $input, string $cast = null) : array
+function phore_json_decode(string $input, string $cast = null) : mixed
 {
     $ret = json_decode($input, true, 512, JSON_PRESERVE_ZERO_FRACTION);
     if ($ret === null)
@@ -398,6 +398,7 @@ function phore_json_decode(string $input, string $cast = null) : array
     }
     return $ret;
 }
+
 
 /**
  * @param $input
