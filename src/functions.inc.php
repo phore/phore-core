@@ -446,6 +446,23 @@ function phore_yaml_decode(string $input) : array
 }
 
 
+function phore_yaml_decode_file(string $filename) : array {
+    // Load Yaml from file but throw execption indicating the filename on error
+
+    if ( ! function_exists("yaml_parse_file"))
+        throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
+
+    $data = file_get_contents($filename);
+    if ($data === false)
+        throw new InvalidArgumentException("Cannot read file '$filename'");
+    try {
+        return phore_yaml_decode($data);
+    } catch (InvalidArgumentException $e) {
+        throw new InvalidArgumentException("Cannot parse yaml file '$filename': " . $e->getMessage(), 0, $e);
+    }
+}
+
+
 /**
  * Return cryptographic safe string of alphanumeric chars
  *
