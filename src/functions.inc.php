@@ -84,10 +84,10 @@ function phore_pluck ($key, &$data, $default=null)
  *
  * @example
  * $input = "München";
- * $slug = slugify($input, true);
+ * $slug = phore_slugify($input, true);
  * echo $slug;  // Outputs: münchen
  */
-function slugify(string $text, bool $allowUmlauts = false): string {
+function phore_slugify(string $text, bool $allowUmlauts = false): string {
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);
 
     // Transliterate to ASCII only if $allowUmlauts is false
