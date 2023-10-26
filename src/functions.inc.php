@@ -87,9 +87,10 @@ function phore_pluck ($key, &$data, $default=null)
  * $slug = slugify($input);
  * echo $slug;  // Outputs: hello-world
  */
-function phore_slugify(string $text): string {
+function phore_slugify(string $text, bool $allowUmlauts=false): string {
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    if ( ! $allowUmlauts)
+        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
     $text = strtolower($text);
     $text = preg_replace('~[^-\w]+~', '', $text);
     $text = trim($text, '-');
