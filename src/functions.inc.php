@@ -67,32 +67,39 @@ function phore_pluck ($key, &$data, $default=null)
 }
 
 
-
 /**
  * Converts a given string into a URL-friendly slug.
  *
  * The function will:
  * - Replace non-letter or non-numeric characters with a dash
- * - Optionally transliterate the text to ASCII to remove accents
+ * - Optionally transliterate the text to ASCII to remove accents (based on the allowUmlauts parameter)
  * - Convert the string to lowercase
  * - Remove unwanted characters
  * - Trim dashes from the beginning and end
  * - Remove duplicate dashes
  *
  * @param string $text The input string to be slugified.
+ * @param bool $allowUmlauts (default: false) If set to true, characters with umlauts and other diacritics will not be converted to ASCII.
  * @return string The resulting slug.
  *
  * @example
- * $input = "Hello, World!";
- * $slug = slugify($input);
- * echo $slug;  // Outputs: hello-world
+ * $input = "München";
+ * $slug = slugify($input, true);
+ * echo $slug;  // Outputs: münchen
  */
-function phore_slugify(string $text, bool $allowUmlauts=false): string {
+function slugify(string $text, bool $allowUmlauts = false): string {
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-    if ( ! $allowUmlauts)
+
+    // Transliterate to ASCII only if $allowUmlauts is false
+    if (!$allowUmlauts) {
         $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        $text = preg_replace('~[^-\w]+~', '', $text);
+    } else {
+        // If we allow umlauts, we need to adjust the regex pattern to allow them
+        $text = preg_replace('~[^\pL\d-]+~u', '', $text);
+    }
+
     $text = strtolower($text);
-    $text = preg_replace('~[^-\w]+~', '', $text);
     $text = trim($text, '-');
     $text = preg_replace('~-+~', '-', $text);
 
