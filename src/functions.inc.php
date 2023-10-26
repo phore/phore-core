@@ -66,6 +66,39 @@ function phore_pluck ($key, &$data, $default=null)
     return phore_pluck($key,$curData, $default);
 }
 
+
+
+/**
+ * Converts a given string into a URL-friendly slug.
+ *
+ * The function will:
+ * - Replace non-letter or non-numeric characters with a dash
+ * - Optionally transliterate the text to ASCII to remove accents
+ * - Convert the string to lowercase
+ * - Remove unwanted characters
+ * - Trim dashes from the beginning and end
+ * - Remove duplicate dashes
+ *
+ * @param string $text The input string to be slugified.
+ * @return string The resulting slug.
+ *
+ * @example
+ * $input = "Hello, World!";
+ * $slug = slugify($input);
+ * echo $slug;  // Outputs: hello-world
+ */
+function phore_slugify(string $text): string {
+    $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+    $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+    $text = strtolower($text);
+    $text = preg_replace('~[^-\w]+~', '', $text);
+    $text = trim($text, '-');
+    $text = preg_replace('~-+~', '-', $text);
+
+    return $text;
+}
+
+
 function startsWith($haystack, $needle) : bool
 {
     $length = strlen($needle);
