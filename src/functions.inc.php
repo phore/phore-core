@@ -465,22 +465,24 @@ function phore_yaml_decode(string $input) : array
     if ( ! function_exists("yaml_parse"))
         throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
 
+    $errorHandler = function ($severity, $message, $file, $line) {
+        if (!(error_reporting() & $severity)) {
+            return;
+        }
+        throw new ErrorException($message, 0, $severity, $file, $line);
+    };
+    set_error_handler($errorHandler);
+
     try {
         ini_set("yaml.decode_php", false);
         $ret = yaml_parse($input);
+        restore_error_handler();
     } catch (ErrorException $e) {
+        restore_error_handler();
         throw new InvalidArgumentException(
-            "phore_yaml_decode(): {$e->getMessage()}",
+            "{$e->getMessage()}",
             0,
             $e
-        );
-    }
-
-    if ($ret === false) {
-        $err = error_get_last();
-        throw new InvalidArgumentException(
-            "Invalid yaml input: {$err["message"]}",
-            0
         );
     }
     return $ret;
