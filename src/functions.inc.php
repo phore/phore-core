@@ -668,4 +668,26 @@ function phore_once(callable $callOnce, string $key="")
     return $ret;
 }
 
+/**
+ * Create a passwort without ambiguous characters
+ * 
+ * @param int $length
+ * @return string
+ * @throws Exception
+ */
+function phore_pwgen(int $length = 10): string {
+    // Define a character set without ambiguous characters
+    $chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+    $password = '';
 
+    // Get the size of the character set
+    $charLen = strlen($chars) - 1;
+
+    // Generate the password
+    for ($i = 0; $i < $length; $i++) {
+        $randomIndex = random_int(0, $charLen);
+        $password .= $chars[$randomIndex];
+    }
+
+    return $password;
+}
