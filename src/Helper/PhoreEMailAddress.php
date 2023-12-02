@@ -21,12 +21,12 @@ class PhoreEMailAddress
     private ?string $name;
 
     public function __construct(string $emailInput) {
-        $this->rawInput = filter_var($emailInput, FILTER_SANITIZE_STRING);
+        $this->rawInput = $emailInput;
         $this->extractEmailAndName();
     }
 
     private function extractEmailAndName(): void {
-        $pattern = '/(?<name>.*?)<?(?<email>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})>?/';
+        $pattern = '/(?<name>.*?)<?(?<email>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+)>?/';
         if (preg_match($pattern, $this->rawInput, $matches)) {
             $this->email = $matches['email'];
             $this->name = trim($matches['name']);
@@ -53,6 +53,16 @@ class PhoreEMailAddress
         return $this->name;
     }
 
+    public function validate(\Exception $exception = null): self {
+        if ($this->email === null) {
+            if ($exception !== null) {
+                throw $exception;
+            }
+            throw new \InvalidArgumentException('Invalid email address: "$this->rawInput"');
+        }
+        return $this;
+    } 
+    
     public function isValid(): bool {
         return filter_var($this->email, FILTER_VALIDATE_EMAIL) !== false;
     }
