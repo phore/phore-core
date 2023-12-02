@@ -691,3 +691,23 @@ function phore_pwgen(int $length = 10): string {
 
     return $password;
 }
+
+/**
+ * Return the PhoreEMailAddress object to easy interpret and validata Name<email> strings
+ * 
+ * Example:
+ * <pre>
+ *      $email = phore_email("John Doe <John.Doe@xy.xy>");
+ *      echo $email->getName(); // John Doe
+ *      echo $email->getEmail(); // John.Doe@xy.xy
+ *      echo $email->getEMailNormalized(); // john.doe@xy.xy
+ * </pre>   
+ * 
+ * @param string|\Phore\Core\Helper\PhoreEMailAddress $email
+ * @return \Phore\Core\Helper\PhoreEMailAddress
+ */
+function phore_email(string|\Phore\Core\Helper\PhoreEMailAddress $email) : \Phore\Core\Helper\PhoreEMailAddress {
+    if ($email instanceof \Phore\Core\Helper\PhoreEMailAddress)
+        return $email;
+    return new \Phore\Core\Helper\PhoreEMailAddress($email);
+}
