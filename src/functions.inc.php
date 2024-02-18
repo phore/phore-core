@@ -689,6 +689,10 @@ function phore_pwgen(int $length = 10): string {
         $password .= $chars[$randomIndex];
     }
 
+    // Password must contain at least on uppercase, lowercase and nummeric letter
+    if ( ! preg_match("/[A-Z]/", $password) || ! preg_match("/[a-z]/", $password) || ! preg_match("/[0-9]/", $password))
+        return phore_pwgen($length);
+    
     return $password;
 }
 
