@@ -670,7 +670,7 @@ function phore_once(callable $callOnce, string $key="")
 
 /**
  * Create a passwort without ambiguous characters
- * 
+ *
  * @param int $length
  * @return string
  * @throws Exception
@@ -692,21 +692,21 @@ function phore_pwgen(int $length = 10): string {
     // Password must contain at least on uppercase, lowercase and nummeric letter
     if ( ! preg_match("/[A-Z]/", $password) || ! preg_match("/[a-z]/", $password) || ! preg_match("/[0-9]/", $password))
         return phore_pwgen($length);
-    
+
     return $password;
 }
 
 /**
  * Return the PhoreEMailAddress object to easy interpret and validata Name<email> strings
- * 
+ *
  * Example:
  * <pre>
  *      $email = phore_email("John Doe <John.Doe@xy.xy>");
  *      echo $email->getName(); // John Doe
  *      echo $email->getEmail(); // John.Doe@xy.xy
  *      echo $email->getEMailNormalized(); // john.doe@xy.xy
- * </pre>   
- * 
+ * </pre>
+ *
  * @param string|\Phore\Core\Helper\PhoreEMailAddress $email
  * @return \Phore\Core\Helper\PhoreEMailAddress
  */
@@ -714,4 +714,21 @@ function phore_email(string|\Phore\Core\Helper\PhoreEMailAddress $email) : \Phor
     if ($email instanceof \Phore\Core\Helper\PhoreEMailAddress)
         return $email;
     return new \Phore\Core\Helper\PhoreEMailAddress($email);
+}
+
+/**
+ * Return ISO 8601 formatted date string
+ *
+ * Example: 2024-12-24T12:00:00Z
+ *
+ *
+ * @return string
+ */
+function phore_datetime(int $ts = null) : string {
+    if ($ts === null)
+        $ts = time();
+
+    $date = new DateTime();
+    $date->setTimestamp($ts);
+    return $date->format(DateTime::ATOM);
 }
