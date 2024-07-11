@@ -735,3 +735,20 @@ function phore_email(string|\Phore\Core\Helper\PhoreEMailAddress $email) : \Phor
         return $email;
     return new \Phore\Core\Helper\PhoreEMailAddress($email);
 }
+
+/**
+ * Return ISO 8601 formatted date string
+ *
+ * Example: 2024-12-24T12:00:00Z
+ *
+ *
+ * @return string
+ */
+function phore_datetime(int $ts = null) : string {
+    if ($ts === null)
+        $ts = time();
+
+    $date = new DateTime();
+    $date->setTimestamp($ts);
+    return $date->format(DateTime::ATOM);
+}
