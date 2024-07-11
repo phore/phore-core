@@ -68,6 +68,26 @@ function phore_pluck ($key, &$data, $default=null)
 
 
 /**
+ * Clone one Object into another Object type
+ *
+ * @template T
+ * @param $inputObject
+ * @param class-string<T> $outputClass
+ * @param array $constructorParameters
+ * @return T
+ */
+function phore_cast_object(object|array $inputObject, string $outputClass, array $constructorParameters = []) : object {
+    $obj = new $outputClass(...$constructorParameters);
+    foreach ($inputObject as $key => $value) {
+        if (property_exists($obj, $key)) {
+            $obj->$key = $value;
+        }
+    }
+    return $obj;
+}
+
+
+/**
  * Converts a given string into a URL-friendly slug.
  *
  * The function will:
@@ -670,7 +690,7 @@ function phore_once(callable $callOnce, string $key="")
 
 /**
  * Create a passwort without ambiguous characters
- * 
+ *
  * @param int $length
  * @return string
  * @throws Exception
@@ -692,21 +712,21 @@ function phore_pwgen(int $length = 10): string {
     // Password must contain at least on uppercase, lowercase and nummeric letter
     if ( ! preg_match("/[A-Z]/", $password) || ! preg_match("/[a-z]/", $password) || ! preg_match("/[0-9]/", $password))
         return phore_pwgen($length);
-    
+
     return $password;
 }
 
 /**
  * Return the PhoreEMailAddress object to easy interpret and validata Name<email> strings
- * 
+ *
  * Example:
  * <pre>
  *      $email = phore_email("John Doe <John.Doe@xy.xy>");
  *      echo $email->getName(); // John Doe
  *      echo $email->getEmail(); // John.Doe@xy.xy
  *      echo $email->getEMailNormalized(); // john.doe@xy.xy
- * </pre>   
- * 
+ * </pre>
+ *
  * @param string|\Phore\Core\Helper\PhoreEMailAddress $email
  * @return \Phore\Core\Helper\PhoreEMailAddress
  */
