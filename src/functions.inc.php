@@ -93,7 +93,7 @@ function phore_cast_object(object|array $inputObject, string $outputClass, array
  * @param object|array $object
  * @return array
  */
-function phore_object_to_array(object|array$object) : array
+function phore_object_to_array(object|array $object) : array
 {
     if (is_object($object))
         $object = (array)$object;
@@ -101,7 +101,7 @@ function phore_object_to_array(object|array$object) : array
         throw new InvalidArgumentException("Parameter 1 must be object or array");
     $ret = [];
     foreach ($object as $key => $value) {
-        if (is_object($value))
+        if (is_object($value) || is_array($value))
             $value = phore_object_to_array($value);
         $ret[$key] = $value;
     }
