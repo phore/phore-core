@@ -88,6 +88,27 @@ function phore_cast_object(object|array $inputObject, string $outputClass, array
 
 
 /**
+ * Convert a Object recursive to (assoc) array
+ *
+ * @param object|array $object
+ * @return array
+ */
+function phore_object_to_array(object|array$object) : array
+{
+    if (is_object($object))
+        $object = (array)$object;
+    if ( ! is_array($object))
+        throw new InvalidArgumentException("Parameter 1 must be object or array");
+    $ret = [];
+    foreach ($object as $key => $value) {
+        if (is_object($value))
+            $value = phore_object_to_array($value);
+        $ret[$key] = $value;
+    }
+    return $ret;
+}
+
+/**
  * Converts a given string into a URL-friendly slug.
  *
  * The function will:
