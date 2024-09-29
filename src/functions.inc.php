@@ -684,6 +684,81 @@ function phore_parse_url(string $url, string $default=null) : \Phore\Core\Helper
     return $retUrlObj;
 }
 
+/**
+ * Return a representation of the variable value
+ *
+ * @param $data
+ * @param int $depth
+ * @return string
+ */
+function phore_var($data, int $depth = 0): string
+{
+    $maxDepth = 2;
+    $maxStringLength = 50;
+    $maxArrayElements = 5;
+
+    if ($depth > $maxDepth) {
+        return '...';
+    }
+
+    switch (true) {
+        case is_null($data):
+            return 'null';
+
+        case is_bool($data):
+            return 'bool ' . ($data ? 'true' : 'false');
+
+        case is_int($data):
+            return 'int ' . $data;
+
+        case is_float($data):
+            return 'float ' . $data;
+
+        case is_string($data):
+            if ($data === '') {
+                return 'empty string';
+            }
+            $len = strlen($data);
+            $truncated = mb_substr($data, 0, $maxStringLength);
+            if ($len > $maxStringLength) {
+                $truncated .= '...';
+            }
+            return 'string(' . $len . ') "' . $truncated . '"';
+
+        case is_array($data):
+            $len = count($data);
+            if ($len === 0) {
+                return 'array(0) []';
+            }
+            $elements = [];
+            $count = 0;
+            foreach ($data as $key => $value) {
+                if ($count >= $maxArrayElements) {
+                    $elements[] = '...';
+                    break;
+                }
+                $keyStr = is_int($key) ? $key : '"' . $key . '"';
+                $valueStr = phore_var($value, $depth + 1);
+                $elements[] = $keyStr . ' => ' . $valueStr;
+                $count++;
+            }
+            return 'array(' . $len . ') [' . implode(', ', $elements) . ']';
+
+        case is_object($data):
+            $className = get_class($data);
+            if ($data instanceof \DateTimeInterface) {
+                return 'object(' . $className . ') "' . $data->format('c') . '"';
+            }
+            return 'object(' . $className . ') {...}';
+
+        case is_resource($data):
+            return 'resource(' . get_resource_type($data) . ')';
+
+        default:
+            return 'unknown type';
+    }
+}
+
 
 /**
  * Run callable only once per script run
