@@ -691,7 +691,7 @@ function phore_parse_url(string $url, string $default=null) : \Phore\Core\Helper
  * @param int $depth
  * @return string
  */
-function phore_var($data, int $depth = 0): string
+function phore_debug_var($data, int $depth = 0): string
 {
     $maxDepth = 2;
     $maxStringLength = 50;
@@ -738,7 +738,7 @@ function phore_var($data, int $depth = 0): string
                     break;
                 }
                 $keyStr = is_int($key) ? $key : '"' . $key . '"';
-                $valueStr = phore_var($value, $depth + 1);
+                $valueStr = phore_debug_var($value, $depth + 1);
                 $elements[] = $keyStr . ' => ' . $valueStr;
                 $count++;
             }
