@@ -491,7 +491,11 @@ function phore_yaml_encode($input) : string
     if ( ! function_exists("yaml_parse"))
         throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
     ini_set("yaml.decode_php", false);
-    return yaml_emit($input, YAML_UTF8_ENCODING);
+    $out = yaml_emit($input, YAML_UTF8_ENCODING);
+    // Strip --- at the beginning of the file and ... at the end
+    $out = preg_replace("/^---\n/", "", $out);
+    $out = preg_replace("/\.\.\.$/", "", $out);
+    return $out;
 }
 
 /**
