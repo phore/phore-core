@@ -852,3 +852,6 @@ function phore_datetime(int $ts = null) : string {
     $date->setTimestamp($ts);
     return $date->format(DateTime::ATOM);
 }
+
+
+require __DIR__ . "/fn/phore_glob.inc.php";
