@@ -37,22 +37,6 @@ function phore_glob(
                     continue;
                 }
             }
-
-            // Apply exclusion patterns if $exclude is an array
-            if (is_array($exclude)) {
-                if ($rootPath !== null) {
-                    $relativePath = ltrim(str_replace(realpath($rootPath), '', realpath($resolved)), '\/\\\\');
-                } else {
-                    $relativePath = basename($resolved);
-                }
-                foreach ($exclude as $exPattern) {
-                    if (fnmatch($exPattern, $relativePath)) {
-                        // Skip this file if it matches one of the exclude patterns.
-                        continue 2;
-                    }
-                }
-            }
-
             $results[] = $resolved;
         }
         return $results;
@@ -60,8 +44,8 @@ function phore_glob(
 
     // Handle '**' expansion
     [$baseDir, $subPattern] = explode('**', $pattern, 2);
-    $baseDir = rtrim($baseDir, '\/\\\\') ?: '.';
-    $subPattern = ltrim(str_replace('\\\\', '/', $subPattern), '/');
+    $baseDir = rtrim($baseDir, '/\\') ?: '.';
+    $subPattern = ltrim(str_replace('\\', '/', $subPattern), '/');
 
     $iterator = new RecursiveIteratorIterator(
         new RecursiveDirectoryIterator($baseDir, FilesystemIterator::SKIP_DOTS)
@@ -69,7 +53,7 @@ function phore_glob(
 
     foreach ($iterator as $file) {
         $filePath = $file->getPathname();
-        $relativePath = ltrim(str_replace(realpath($baseDir), '', realpath($filePath)), '\/\\\\');
+        $relativePath = ltrim(str_replace(realpath($baseDir), '', realpath($filePath)), '/\\');
 
         // Apply exclusion patterns if $exclude is an array
         if (is_array($exclude)) {
