@@ -505,7 +505,7 @@ function phore_yaml_encode($input) : string
  * @throws InvalidArgumentException
  * @return array
  */
-function phore_yaml_decode(string $input) : array
+function phore_yaml_decode(string $input) : array 
 {
     if ( ! function_exists("yaml_parse"))
         throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
@@ -530,6 +530,8 @@ function phore_yaml_decode(string $input) : array
             $e
         );
     }
+    if ( ! is_array($ret))
+        throw new InvalidArgumentException("Cannot parse yaml input data: Result is not array.");
     return $ret;
 }
 
