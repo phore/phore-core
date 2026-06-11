@@ -1,5 +1,6 @@
 version: 1
-from: "infracamp/kickstart-flavor-gaia:testing"
+from: "ghcr.io/nfra-project/kickstart-flavor-php:unstable"
+secrets: open_ai
 
 apache_fallback_resource: "/index.php"
 
