@@ -511,9 +511,6 @@ function phore_yaml_decode(string $input) : array
         throw new InvalidArgumentException("yaml-ext is missing. please install php yaml extension.");
 
     $errorHandler = function ($severity, $message, $file, $line) {
-        if (!(error_reporting() & $severity)) {
-            return;
-        }
         throw new ErrorException($message, 0, $severity, $file, $line);
     };
     set_error_handler($errorHandler);
@@ -524,14 +521,26 @@ function phore_yaml_decode(string $input) : array
         restore_error_handler();
     } catch (ErrorException $e) {
         restore_error_handler();
-        throw new InvalidArgumentException(
-            "{$e->getMessage()}",
-            0,
+        $message = $e->getMessage();
+        $errorLine = null;
+        $errorColumn = null;
+        $errorSourceLine = null;
+        if (preg_match('/\bline\s+(\d+)\b(?:\s*,\s*column\s+(\d+)\b)?/i', $message, $matches)) {
+            $errorLine = (int) $matches[1];
+            $errorColumn = isset($matches[2]) && $matches[2] !== '' ? (int) $matches[2] : null;
+            $lines = preg_split('/\r\n|\n|\r/', $input);
+            $errorSourceLine = $lines[$errorLine - 1] ?? null;
+        }
+        throw new \Phore\Core\Exception\YamlDecodeException(
+            $message,
+            $errorLine,
+            $errorColumn,
+            $errorSourceLine,
             $e
         );
     }
     if ( ! is_array($ret))
-        throw new InvalidArgumentException("Cannot parse yaml input data: Result is not array.");
+        throw new \Phore\Core\Exception\YamlDecodeException("Cannot parse yaml input data: Result is not array.");
     return $ret;
 }
 
@@ -547,6 +556,14 @@ function phore_yaml_decode_file(string $filename) : array {
         throw new InvalidArgumentException("Cannot read file '$filename'");
     try {
         return phore_yaml_decode($data);
+    } catch (\Phore\Core\Exception\YamlDecodeException $e) {
+        throw new \Phore\Core\Exception\YamlDecodeException(
+            "Cannot parse yaml file '$filename': " . $e->getMessage(),
+            $e->getErrorLine(),
+            $e->getErrorColumn(),
+            $e->getErrorSourceLine(),
+            $e
+        );
     } catch (InvalidArgumentException $e) {
         throw new InvalidArgumentException("Cannot parse yaml file '$filename': " . $e->getMessage(), 0, $e);
     }
