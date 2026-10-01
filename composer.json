@@ -9,7 +9,7 @@
   "repositories": [
   ],
   "require": {
-    "php": ">=7.1"
+    "php": ">=8.0"
   },
   "suggest": {
     "ext-yaml": "Yaml encoding parsing",
