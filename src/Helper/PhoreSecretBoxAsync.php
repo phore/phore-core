@@ -11,7 +11,7 @@ class PhoreSecretBoxAsync
     private $ttl;
     private $gzip;
 
-    public function __construct(int $ttl=null, bool $gzip=true)
+    public function __construct(?int $ttl=null, bool $gzip=true)
     {       
         if ( ! function_exists("sodium_crypto_box_seal"))
             throw new \InvalidArgumentException("libsodium library (libsodium-ext) missing");

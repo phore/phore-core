@@ -348,7 +348,7 @@ function phore_out($msg=null, $return = false) {
  * @param array $allowedChars
  * @param Exception Exception to throw
  */
-function phore_assert_str_alnum($input, array $allowedChars=[], Exception $throwException=null) : bool
+function phore_assert_str_alnum($input, array $allowedChars=[], ?Exception $throwException=null) : bool
 {
     if ( ! is_string($input))
         throw new InvalidArgumentException("Parameter 1 is not type string.");
@@ -466,7 +466,7 @@ function phore_json_encode($input, bool $prettyPrint=false) : string
  * @return array|T
  * @throws InvalidArgumentException
  */
-function phore_json_decode(string $input, string $cast = null) : mixed
+function phore_json_decode(string $input, ?string $cast = null) : mixed
 {
     $ret = json_decode($input, true, 512, JSON_PRESERVE_ZERO_FRACTION);
     if ($ret === null)
@@ -621,7 +621,7 @@ function phore_random_str (int $len = 12, $requireSodium=false) : string
  * @param int|null $arrayParts
  * @return array|null|string
  */
-function phore_parse_annotation(string $text, string $annotationName, int $arrayParts = null)
+function phore_parse_annotation(string $text, string $annotationName, ?int $arrayParts = null)
 {
     if (substr($annotationName, 0,1) !== "@")
         throw new InvalidArgumentException("Parameter 2 must start with '@' character");
@@ -668,7 +668,7 @@ function phore_parse_annotation(string $text, string $annotationName, int $array
  * @param int|null $optind
  * @return PhoreGetOptResult
  */
-function phore_getopt(string $options, array $longopts = [], int &$optind = null) : PhoreGetOptResult
+function phore_getopt(string $options, array $longopts = [], ?int &$optind = null) : PhoreGetOptResult
 {
     $opt = getopt($options, $longopts, $optind);
     return new PhoreGetOptResult($opt, $optind);
@@ -682,7 +682,7 @@ function phore_getopt(string $options, array $longopts = [], int &$optind = null
  * @param string|null $default
  * @return \Phore\Core\Helper\PhoreUrl
  */
-function phore_parse_url(string $url, string $default=null) : \Phore\Core\Helper\PhoreUrl
+function phore_parse_url(string $url, ?string $default=null) : \Phore\Core\Helper\PhoreUrl
 {
     $schema = parse_url($url);
     if ($schema === false)
@@ -863,7 +863,7 @@ function phore_email(string|\Phore\Core\Helper\PhoreEMailAddress $email) : \Phor
  *
  * @return string
  */
-function phore_datetime(int $ts = null) : string {
+function phore_datetime(?int $ts = null) : string {
     if ($ts === null)
         $ts = time();
 

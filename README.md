@@ -59,3 +59,15 @@ assert([["x"=>"y"]] == $out);
 ### phore_random_str()
 
 Wrapper around libsodium and 
+
+## Tests
+
+Install the PHP extensions `yaml`, `sodium`, `json` and `mbstring`, then run:
+
+```sh
+composer install
+composer test
+```
+
+The test suite uses PHPSpec (PHP 8.2 or newer for development) and runs with
+all PHP warnings and deprecations enabled, including on PHP 8.5.

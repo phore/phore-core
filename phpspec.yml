@@ -1,0 +1,6 @@
+bootstrap: spec/fixtures/Functions.php
+
+suites:
+  core:
+    namespace: Phore\Core
+    psr4_prefix: Phore\Core

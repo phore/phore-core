@@ -39,9 +39,9 @@ class PhoreUrl
      * @return mixed
      * @throws \Exception
      */
-    public function getQueryVal(string $key = null, $default=null)
+    public function getQueryVal(?string $key = null, $default=null)
     {
-        parse_str($this->query, $result);
+        parse_str($this->query ?? "", $result);
         if ($key === null)
             return $result;
         return phore_pluck($key, $result, $default);
@@ -55,7 +55,7 @@ class PhoreUrl
      */
     public function hasQueryVal(string $key) : bool
     {
-        parse_str($this->query, $result);
+        parse_str($this->query ?? "", $result);
         return isset ($result[$key]);
     }
 
@@ -68,7 +68,7 @@ class PhoreUrl
      * @param string|null $host
      * @return $this
      */
-    public function withHost(string $host = null) : self
+    public function withHost(?string $host = null) : self
     {
         $new = clone ($this);
         $new->host = $host;
@@ -83,7 +83,7 @@ class PhoreUrl
      * @param string|null $pass
      * @return PhoreUrl
      */
-    public function withUserPass(string $user=null, string $pass = null) : self
+    public function withUserPass(?string $user=null, ?string $pass = null) : self
     {
         $new = clone($this);
         $new->user = $user;
@@ -108,10 +108,10 @@ class PhoreUrl
      * @param string|null $value
      * @return $this
      */
-    public function withQueryParam(string $key, string $value = null) : self
+    public function withQueryParam(string $key, ?string $value = null) : self
     {
         $new = clone $this;
-        parse_str($this->query, $result);
+        parse_str($this->query ?? "", $result);
 
         if ($value === null) {
             unset ($result[$key]);
@@ -135,14 +135,14 @@ class PhoreUrl
      * @param array|null $params
      * @return PhoreUrl
      */
-    public function withQueryParams(array $params = null) : self
+    public function withQueryParams(?array $params = null) : self
     {
         $new = clone $this;
         if ($params === null) {
             $new->query = "";
             return $new;
         }
-        parse_str($this->query, $result);
+        parse_str($this->query ?? "", $result);
 
         foreach ($params as $key => $value)
             $result[$key] = $value;

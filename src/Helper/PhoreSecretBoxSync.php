@@ -11,7 +11,7 @@ class PhoreSecretBoxSync
     private $gzip;
 
 
-    public function __construct($enryptionSecret, int $ttl=null, bool $gzip=true)
+    public function __construct($enryptionSecret, ?int $ttl=null, bool $gzip=true)
     {
         if ( ! is_string($enryptionSecret))
             throw new \InvalidArgumentException("Parameter1: Secret is not a string.");
