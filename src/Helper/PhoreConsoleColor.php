@@ -46,7 +46,7 @@ class PhoreConsoleColor
     ];
 
 
-    public static function SetColor(string $fg_color=null, string $bg_color=null)
+    public static function SetColor(?string $fg_color=null, ?string $bg_color=null)
     {
         $fg = $fg_color !== null ? self::FG[$fg_color] : "";
         $bg = $bg_color !== null ? self::BG[$bg_color] : "";

@@ -53,7 +53,7 @@ class PhoreEMailAddress
         return $this->name;
     }
 
-    public function validate(\Exception $exception = null): self {
+    public function validate(?\Exception $exception = null): self {
         if ($this->email === null) {
             if ($exception !== null) {
                 throw $exception;

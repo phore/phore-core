@@ -28,9 +28,9 @@ class _PhoreAssert
      * @return _PhoreFilter
      * @throws InvalidDataException
      */
-    public function filter(int $filter=FILTER_DEFAULT, $options=null, \Exception $throw = null) : self
+    public function filter(int $filter=FILTER_DEFAULT, $options=null, ?\Exception $throw = null) : self
     {
-        $ret = filter_var($this->value, $filter, $options);
+        $ret = filter_var($this->value, $filter, $options ?? 0);
         if ($ret === false) {
             if ($throw !== null)
                 throw $throw;
@@ -46,7 +46,7 @@ class _PhoreAssert
      * @return string|null
      * @throws InvalidDataException
      */
-    public function safeString(array $allowChars = [], \Exception $exception = null)
+    public function safeString(array $allowChars = [], ?\Exception $exception = null)
     {
         if ( ! phore_assert_str_alnum($this->value, $allowChars, $exception)) {
             return null;
@@ -60,7 +60,7 @@ class _PhoreAssert
      * @return string|null
      * @throws InvalidDataException
      */
-    public function safeFileNameComponentString(bool $allowSlash = false, \Exception $exception = null) : string
+    public function safeFileNameComponentString(bool $allowSlash = false, ?\Exception $exception = null) : string
     {
         if (str_contains($this->value, "..")) {
             if ($exception !== null)
@@ -80,7 +80,7 @@ class _PhoreAssert
      * @param \Exception|null $throwException
      * @throws InvalidDataException
      */
-    public function email(\Exception $throwException=null) : self
+    public function email(?\Exception $throwException=null) : self
     {
         if ($throwException === null)
             $throwException = new InvalidDataException("Input '$this->value' is not a valid email address.");

@@ -25,10 +25,19 @@
     ]
   },
   "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "platform": {
+      "php": "8.2.0"
+    }
+  },
   "require-dev": {
-    "phpunit/phpunit": "*",
+    "phpspec/phpspec": "^8.3",
     "ext-yaml": "*",
     "ext-sodium": "*",
     "ext-json": "*"
+  },
+  "scripts": {
+    "test": "@php -d error_reporting=-1 vendor/bin/phpspec run --no-interaction"
   }
 }
