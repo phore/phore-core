@@ -632,7 +632,16 @@ function phore_parse_annotation(string $text, string $annotationName, ?int $arra
 
     $val = substr($text, $startPos + strlen($annotationName));
 
-    $val = substr($val, 0, strpos($val, "\n"));
+    $val = explode("\n", $val, 2)[0];
+
+    // Ein Blockkommentar kann bereits in derselben Zeile enden.
+    $prefix = substr($text, 0, $startPos);
+    $commentStart = strrpos($prefix, "/*");
+    $previousCommentEnd = strrpos($prefix, "*/");
+    if ($commentStart !== false && ($previousCommentEnd === false || $commentStart > $previousCommentEnd)) {
+        $val = explode("*/", $val, 2)[0];
+    }
+
     $val = trim ($val);
 
     if ($arrayParts === null)

@@ -142,6 +142,43 @@ TEXT;
         $this->phore_parse_annotation(self::ANNOTATIONS, "@an3", 2)->shouldBe(["abc", "def ghi"]);
     }
 
+    function it_parses_single_line_annotations_with_or_without_line_endings()
+    {
+        foreach (["", "\n", "\r\n"] as $ending) {
+            foreach (["// ", "# ", ""] as $prefix) {
+                $this->phore_parse_annotation($prefix . "@an0" . $ending, "@an0")->shouldBe("");
+                $this->phore_parse_annotation($prefix . "@an1 abc" . $ending, "@an1")->shouldBe("abc");
+                $this->phore_parse_annotation($prefix . "@an2 abc def" . $ending, "@an2", 2)
+                    ->shouldBe(["abc", "def"]);
+            }
+
+            foreach (["/*", "/**"] as $prefix) {
+                $this->phore_parse_annotation($prefix . " @an0 */" . $ending, "@an0")->shouldBe("");
+                $this->phore_parse_annotation($prefix . " @an1 abc */" . $ending, "@an1")->shouldBe("abc");
+                $this->phore_parse_annotation($prefix . " @an2 abc def */" . $ending, "@an2", 2)
+                    ->shouldBe(["abc", "def"]);
+            }
+        }
+    }
+
+    function it_stops_at_the_annotation_line_for_unix_and_windows_line_endings()
+    {
+        foreach (["\n", "\r\n"] as $ending) {
+            $text = implode($ending, ["// @an1 abc", "// @an2 def ghi"]);
+            $this->phore_parse_annotation($text, "@an1")->shouldBe("abc");
+            $this->phore_parse_annotation($text, "@an2", 2)->shouldBe(["def", "ghi"]);
+
+            $text = implode($ending, ["/**", " * @an1 abc", " * @an2 def ghi */"]);
+            $this->phore_parse_annotation($text, "@an1")->shouldBe("abc");
+            $this->phore_parse_annotation($text, "@an2", 2)->shouldBe(["def", "ghi"]);
+        }
+    }
+
+    function it_preserves_a_literal_block_comment_end_in_a_line_comment()
+    {
+        $this->phore_parse_annotation("// @an1 abc */", "@an1")->shouldBe("abc */");
+    }
+
     function it_generates_random_strings_of_the_requested_length()
     {
         $this->value(strlen(phore_random_str(120)))->shouldBe(120);
